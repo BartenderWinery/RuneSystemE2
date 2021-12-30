@@ -65,11 +65,12 @@ if(first()){
         # Sound
         holoCreate(800)
         holoAlpha(800,0)
+        
         holoPos(800,owner():toWorld(vec(0,0,owner():height()/2)))
         holoEntity(800):soundPlay(1,0,"ambient/levels/citadel/pod_close1.wav")
-        
         # Rune Functions
         if(R == RUNE_AAM){
+            propSpawn("models/props_phx/torpedo.mdl",owner():aimPos(),ang(0,0,0),1):propBreak()
             print("AAM!")
         }
         if(R == RUNE_VITAE){
@@ -82,9 +83,11 @@ if(first()){
         if(DRAWPOINT == 1){
             holoCreate(PList:count())
             rangerFlags("W")
-            holoPos(PList:count(),rangerOffset(55, owner():shootPos(), owner():eye()):pos())
+            Col = hsv2rgb(((curtime() * 33)+(1*3)),1,1)
+            holoPos(PList:count(),rangerOffset(55, owner():shootPos(), owner():eye()):pos()+vec(0,0,5))
             holoModel(PList:count(),"models/effects/vol_light128x128.mdl")
-            holoScale(PList:count(),vec(1,1,1)*0.1)
+            holoColor(PList:count(),Col)
+            holoScale(PList:count(),vec(1,1,1)*0.05)
         }
         # If PList is empty, return
         if(!PList:count() == 0 && Pos == PList[PList:count(),vector]){
@@ -279,8 +282,8 @@ if(clk("analysis")){
             holoPos(800,owner():toWorld(vec(0,0,owner():height()/2)))
             
             # Actual Sound
-            holoEntity(800):soundPlay(1,0,"ambient/atmosphere/underground_hall_loop1.wav")
-            soundPitch(1,200)
+            holoEntity(800):soundPlay(1,0,"ambient/levels/citadel/citadel_drone_loop1.wav")
+            soundPitch(1,155)
         }else{
             # Analyze Rune Drawn
             analyze()
@@ -290,20 +293,19 @@ if(clk("analysis")){
             soundStop(1)
             
             # Last 3 occurences of Analyzer
-            local Analyzer = LastSpell:concat(""):sub(3,LastSpell:count())
-            
+            local Analyzer = LastSpell:concat(""):sub(LastSpell:count()-2,LastSpell:count())
+            holoDeleteAll()
             # Rune Definitions
+            #print(Analyzer)
             switch(Analyzer){
                 
-                # AAM [ RIGHT ]
-                case "98", makeRune(RUNE_AAM) break
-                
-                # VITAE [ RIGHT UP ]
-                case "988", makeRune(RUNE_VITAE) break
-                case "9888", makeRune(RUNE_VITAE) break
+                case "898", makeRune(RUNE_AAM) break             # AAM [ RIGHT ]
+                case "868", makeRune(RUNE_AAM) break             # AAM [ RIGHT ]
+                case "988", makeRune(RUNE_VITAE) break          # VITAE [ RIGHT UP ]
+                case "9888", makeRune(RUNE_VITAE) break         # VITAE [ RIGHT UP ]
                 
             }
-            holoDeleteAll()
+            
         }
     }
     
