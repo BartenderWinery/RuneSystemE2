@@ -87,7 +87,7 @@ if(first()){
             SUMMON:setPos(owner():shootPos())
             SUMMON:setMass(444)
             SUMMON:propFreeze(0)
-            SUMMON:applyForce(((owner():aimPos()-SUMMON:pos())*(SUMMON:mass()*444)))
+            SUMMON:applyForce(((owner():aimPos()-owner():shootPos())*(SUMMON:mass()*444)))
             print("VITAE!")
         }
         if(R == RUNE_ZEDRUM){
