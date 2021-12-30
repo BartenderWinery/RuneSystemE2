@@ -85,9 +85,10 @@ if(first()){
             rangerFlags("W")
             Col = hsv2rgb(((curtime() * 33)+(1*3)),1,1)
             holoPos(PList:count(),rangerOffset(55, owner():shootPos(), owner():eye()):pos()+vec(0,0,5))
-            holoModel(PList:count(),"models/effects/vol_light128x128.mdl")
             holoColor(PList:count(),Col)
             holoScale(PList:count(),vec(1,1,1)*0.05)
+            holoModel(PList:count(),"models/effects/vol_light128x128.mdl")
+
         }
         # If PList is empty, return
         if(!PList:count() == 0 && Pos == PList[PList:count(),vector]){
