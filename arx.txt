@@ -1,0 +1,328 @@
+####*  Made By Runic, 30.12.2021
+######* Arx Fatalis Runes
+####*  Have fun with it!
+
+# Name
+@name Arx Fatalis Rune Spells
+
+# Rune Enums
+@persist [RUNE_AAM RUNE_VITAE]
+
+# Dir Enums
+@persist [AUP AUPRIGHT ARIGHT ADOWNRIGHT ADOWN ADOWNLEFT ALEFT AUPLEFT]
+
+# Numbers 
+@persist [INIT_Num DEBUG MAX_POINTS Unreachable FirstPoint DRAWPOINT]
+
+# Arrays, Tables
+@persist [INIT_Arr PList]:array [DIR_ENUM INIT_Tbl RunePattern SpellMoves LastSpell]:table
+
+# Strings
+@persist [INIT_Str ]:string
+
+# Entities
+@persist [INIT_Ent ]:entity
+
+##### START FIRST #####
+if(first()){
+    
+    # DEBUG: turn this on for more info.
+    DEBUG = 1
+    
+    #### DIR ENUMS ####
+    AUP             = 0
+    AUPRIGHT        = 1
+    ARIGHT          = 2
+    ADOWNRIGHT      = 3
+    ADOWN           = 4
+    ADOWNLEFT       = 5
+    ALEFT           = 6
+    AUPLEFT         = 7
+    ###################
+    
+    ###  RUNE ENUMS ###
+    RUNE_AAM        = 1
+    RUNE_VITAE      = 2
+    ###################
+
+    # Vars
+    MAX_POINTS = 200
+    DRAWPOINT = 1
+    
+    # Init
+    FirstPoint = 1
+    
+    ##### START FUNCTIONS #####
+    
+
+    # Unreachable
+    function arx_unreachable(){
+        # Do Nothing
+    }
+    
+    # Make Rune
+    function makeRune(R){
+        # Sound
+        holoCreate(800)
+        holoAlpha(800,0)
+        holoPos(800,owner():toWorld(vec(0,0,owner():height()/2)))
+        holoEntity(800):soundPlay(1,0,"ambient/levels/citadel/pod_close1.wav")
+        
+        # Rune Functions
+        if(R == RUNE_AAM){
+            print("AAM!")
+        }
+        if(R == RUNE_VITAE){
+            print("VITAE!")
+        }
+    }
+    
+    # Add Point
+    function addpoint(Pos:vector){
+        if(DRAWPOINT == 1){
+            holoCreate(PList:count())
+            rangerFlags("W")
+            holoPos(PList:count(),rangerOffset(55, owner():shootPos(), owner():eye()):pos())
+            holoModel(PList:count(),"models/effects/vol_light128x128.mdl")
+            holoScale(PList:count(),vec(1,1,1)*0.1)
+        }
+        # If PList is empty, return
+        if(!PList:count() == 0 && Pos == PList[PList:count(),vector]){
+            return
+        }
+        
+        # If the Max Point Size has been reached, pop back
+        if(PList:count() >= MAX_POINTS){
+            PList:pop()
+        }
+        
+        # Lastly, push in the new point.
+        PList:pushVector(Pos)
+    }
+    
+    # Dot
+    function number length2(VEC:vector){
+        return VEC:dot(VEC)
+    }
+    
+    # Angles to Arx dirs    
+    function number angle2arx(DIR){
+        switch(DIR){
+            case 0, return 6
+            case 1, return 9
+            case 2, return 8
+            case 3, return 7
+            case 4, return 4
+            case 5, return 1
+            case 6, return 2
+            case 7, return 3
+            default, arx_unreachable()
+        }
+    }
+    
+    # Arx dirs to angles
+    function number arx2angle(DIR:string){
+        switch(DIR){
+            case "6", return 0
+            case "9", return 1
+            case "8", return 2
+            case "7", return 3
+            case "4", return 4
+            case "1", return 5
+            case "2", return 6
+            case "3", return 7
+            default, arx_unreachable()
+        }
+    }
+    
+    # Analysis
+    function analyze(){
+        ## Vars
+        local DIRS = array()
+        local Lastdir = 255
+        local CDIR = 0
+
+        ## Code 
+        for(I=1,PList:count()){
+            # From Old point to New Point
+            local D = PList[I-1,vector] - PList[I,vector]
+
+            if(length2(D) > 0.01){
+                
+                # Define A and B absolute values of X and Y        
+                local A = abs(D:x())
+                local B = abs(D:y())
+                
+                if(B != 0 && A / B > 0.4 && A / B < 2.5){   #  /
+                    if(D:x() < 0 && D:y() < 0){
+                        if(Lastdir != ADOWNRIGHT){
+                            Lastdir = ADOWNRIGHT
+                            DIRS[I,number] = ADOWNRIGHT
+                            CDIR++
+                        }
+                    }elseif(D:x() > 0 && D:y() < 0){
+                        if(Lastdir != ADOWNLEFT){
+                            Lastdir = ADOWNLEFT
+                            DIRS[I,number] = ADOWNLEFT
+                            CDIR++
+                        }
+                    }elseif(D:x() < 0 && D:y() > 0){
+                        if(Lastdir != AUPRIGHT){
+                            Lastdir = AUPRIGHT
+                            
+                            DIRS[I,number] = AUPRIGHT
+                            CDIR++
+                        }                    
+                    }elseif(D:x() > 0 && D:y() > 0){
+                        if(Lastdir != AUPLEFT){
+                            Lastdir = AUPLEFT
+                            DIRS[I,number] = AUPLEFT
+                            CDIR++
+                        }                        
+                    }
+                }elseif(A > B){                             # <->
+                    if(D:x() < 0){
+                        if(Lastdir != ARIGHT){
+                            Lastdir = ARIGHT
+                            DIRS[I,number] = ARIGHT
+                            CDIR++
+                        }
+                    }else{
+                        if(Lastdir != ALEFT){
+                            Lastdir = ALEFT
+                            DIRS[I,number] = ALEFT
+                            CDIR++
+                        } 
+                    }
+                }else{                                      #  |
+                    if(D:y() < 0){
+                        if(Lastdir != ADOWN){
+                            Lastdir = ADOWN
+                            DIRS[I,number] = ADOWN
+                            CDIR++
+                        }
+                    }else{
+                        if(Lastdir != AUP){
+                            Lastdir = AUP
+                            DIRS[I,number] = AUP
+                            CDIR++
+                        } 
+                    }               
+                }
+                
+            }
+        }
+        LastSpell = SpellMoves
+        SpellMoves:clear()
+        
+        if(CDIR > 0){
+            for(I=0,CDIR){
+                switch(DIRS[I,number]){
+                    case AUP, SpellMoves:pushNumber(8) break
+                    case ADOWN, SpellMoves:pushNumber(2) break
+                    case ALEFT, SpellMoves:pushNumber(4) break
+                    case ARIGHT, SpellMoves:pushNumber(6) break
+                    case AUPRIGHT, SpellMoves:pushNumber(9) break
+                    case ADOWNRIGHT, SpellMoves:pushNumber(3) break
+                    case AUPLEFT, SpellMoves:pushNumber(7) break
+                    case ADOWNLEFT, SpellMoves:pushNumber(1) break
+                }
+            }
+        }
+    }    
+    
+    # Register Rune Pattern
+    function regRune(RUNE:string,PATTERN:string){
+        RunePattern["PatternData",table][RUNE,string] = PATTERN
+    }
+    ##### END FUNCTIONS #####
+
+    
+    ##### START DEBUG FIRST #####
+    if(DEBUG == 1){
+        # Print rune patterns
+        foreach(K, V:string = RunePattern["PatternData",table]){
+            print(K,V)
+        }
+    }
+    ##### END DEBUG FIRST #####
+    
+    # INIT ANALYSIS
+    timer("analysis",1)
+}
+##### END FIRST #####
+
+##### START TIMERS #####
+
+# Analysis
+if(clk("analysis")){
+    local MOUSE1 = owner():keyAttack1()
+    
+    # Mouse1 is being held down
+    if(MOUSE1){
+        # Flags W so we dont accidently hit entities
+        rangerFlags("W")
+        
+        # Transform the ranger worldpos to local
+        local PX = owner():toLocal(rangerOffset(11, owner():shootPos(), owner():eye()):pos())
+        
+        # Add the point
+        addpoint(PX)
+    }
+    
+    # Mouse1 is being clicked or let go
+    if(changed(MOUSE1)){
+        if(MOUSE1){
+            # Sound Holo
+            holoCreate(800)
+            holoAlpha(800,0)
+            holoPos(800,owner():toWorld(vec(0,0,owner():height()/2)))
+            
+            # Actual Sound
+            holoEntity(800):soundPlay(1,0,"ambient/atmosphere/underground_hall_loop1.wav")
+            soundPitch(1,200)
+        }else{
+            # Analyze Rune Drawn
+            analyze()
+            PList:clear()
+            
+            # Stop Sound
+            soundStop(1)
+            
+            # Last 3 occurences of Analyzer
+            local Analyzer = LastSpell:concat(""):sub(3,LastSpell:count())
+            
+            # Rune Definitions
+            switch(Analyzer){
+                
+                # AAM [ RIGHT ]
+                case "98", makeRune(RUNE_AAM) break
+                
+                # VITAE [ RIGHT UP ]
+                case "988", makeRune(RUNE_VITAE) break
+                case "9888", makeRune(RUNE_VITAE) break
+                
+            }
+            holoDeleteAll()
+        }
+    }
+    
+    # Loop
+    timer("analysis",35)
+}
+
+##### END TIMERS #####
+
+#[
+
+NOTES:
+
+> is to the right
+^ is up
+
+One can get the dirs from the eye dir as such:
+
+#local X = owner():eye():y() # >
+#local Y = owner():eye():z() # ^
+
+]#
