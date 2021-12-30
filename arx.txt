@@ -83,7 +83,7 @@ if(first()){
             noCollide(SUMMON,owner())
             SUMMON:setAlpha(255)
             SUMMON:setPos(owner():shootPos())
-            SUMMON:setMass(50000)
+            SUMMON:setMass(1000)
             SUMMON:propFreeze(0)
             SUMMON:applyForce(((FirePos-owner():shootPos())*(SUMMON:mass()*444)))
             print("VITAE!")
