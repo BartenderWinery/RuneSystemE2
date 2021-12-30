@@ -67,11 +67,11 @@ if(first()){
         FirePos = owner():eyeTraceCursor():pos()
         
         # Sound
-        holoCreate(800)
-        holoAlpha(800,0)
+        holoCreate(801)
+        holoAlpha(801,0)
         
-        holoPos(800,owner():toWorld(vec(0,0,owner():height()/2)))
-        holoEntity(800):soundPlay(1,0,"ambient/levels/citadel/pod_close1.wav")
+        holoPos(801,owner():toWorld(vec(0,0,owner():height()/2)))
+        holoEntity(801):soundPlay(2,0,"ambient/levels/citadel/pod_close1.wav")
         # Rune Functions
         if(R == RUNE_AAM){
             propSpawn("models/props_phx/torpedo.mdl",FirePos,ang(0,0,0),1):propBreak()
@@ -83,9 +83,9 @@ if(first()){
             noCollide(SUMMON,owner())
             SUMMON:setAlpha(255)
             SUMMON:setPos(owner():shootPos())
-            SUMMON:setMass(1000)
+            SUMMON:setMass(444)
             SUMMON:propFreeze(0)
-            SUMMON:applyForce(((FirePos-owner():shootPos())*(SUMMON:mass()*444)))
+            SUMMON:applyForce(((owner():aimPos()-owner():shootPos())*(SUMMON:mass()*444)))
             print("VITAE!")
         }
     }
@@ -272,9 +272,10 @@ if(first()){
 ##### START TIMERS #####
 
 # Analysis
-if(clk("analysis")){
+if(clk("analysis")){   
+    # Keys!
     local MOUSE1 = owner():keyAttack1()
-    
+    local C = owner():keyPressed("c")
     # Mouse1 is being held down
     if(MOUSE1){
         # Flags W so we dont accidently hit entities
@@ -287,9 +288,9 @@ if(clk("analysis")){
         addpoint(PX)
     }
     
-    # Mouse1 is being clicked or let go
-    if(changed(MOUSE1)){
-        if(MOUSE1){
+    # C is being clicked or let go
+    if(changed(C)){
+        if(C){
             # Sound Holo
             holoCreate(800)
             holoAlpha(800,0)
@@ -298,32 +299,46 @@ if(clk("analysis")){
             # Actual Sound
             holoEntity(800):soundPlay(1,0,"ambient/levels/citadel/citadel_drone_loop1.wav")
             soundPitch(1,155)
+        }else{       
+            # Stop Sound
+            soundStop(1)
+        }
+    }
+    
+    # Mouse1 is being clicked or let go
+    if(changed(MOUSE1)){
+        if(MOUSE1){
         }else{
             # Analyze Rune Drawn
             analyze()
-            PList:clear()
             
-            # Stop Sound
-            soundStop(1)
+            # Clear Points
+            PList:clear()
             
             # Last 3 occurences of Analyzer
             local Analyzer = LastSpell:concat(""):sub(LastSpell:count()-2,LastSpell:count())
-            holoDeleteAll()
-            # Rune Definitions
-            #print(Analyzer)
+            
+            # Delete Flares
+            for(I=0,798){
+                holoDelete(I)
+            }
+            
+            ### Rune Definitions ###
+            
+            print(Analyzer)        # Print Pattern
+            
             switch(Analyzer){
-                
-                case "898", makeRune(RUNE_AAM) break              # AAM [ RIGHT ]
+                case "389", makeRune(RUNE_AAM) break              # AAM [ RIGHT ]
+                case "388", makeRune(RUNE_AAM) break              # AAM [ RIGHT ]
                 case "868", makeRune(RUNE_AAM) break              # AAM [ RIGHT ]
                 case "888", makeRune(RUNE_VITAE) break            # VITAE [ RIGHT UP ]        
-                
             }
             
         }
     }
     
     # Loop
-    timer("analysis",35)
+    timer("analysis",16)
 }
 
 ##### END TIMERS #####
