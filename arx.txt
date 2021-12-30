@@ -21,7 +21,7 @@
 @persist [INIT_Str ]:string
 
 # Entities
-@persist [INIT_Ent ]:entity
+@persist [INIT_Ent SUMMON]:entity
 
 ##### START FIRST #####
 if(first()){
@@ -62,6 +62,10 @@ if(first()){
     
     # Make Rune
     function makeRune(R){
+        
+        # Cursor Trace Pos
+        FirePos = owner():eyeTraceCursor():pos()
+        
         # Sound
         holoCreate(800)
         holoAlpha(800,0)
@@ -70,10 +74,18 @@ if(first()){
         holoEntity(800):soundPlay(1,0,"ambient/levels/citadel/pod_close1.wav")
         # Rune Functions
         if(R == RUNE_AAM){
-            propSpawn("models/props_phx/torpedo.mdl",owner():eyeTraceCursor():pos(),ang(0,0,0),1):propBreak()
+            propSpawn("models/props_phx/torpedo.mdl",FirePos,ang(0,0,0),1):propBreak()
             print("AAM!")
         }
         if(R == RUNE_VITAE){
+            SUMMON:propDelete()
+            SUMMON = propSpawn("models/hunter/blocks/cube2x2x2.mdl",ang(0,0,0),1)
+            noCollide(SUMMON,owner())
+            SUMMON:setAlpha(255)
+            SUMMON:setPos(owner():shootPos())
+            SUMMON:setMass(50000)
+            SUMMON:propFreeze(0)
+            SUMMON:applyForce(((FirePos-owner():shootPos())*(SUMMON:mass()*444)))
             print("VITAE!")
         }
     }
@@ -301,10 +313,9 @@ if(clk("analysis")){
             #print(Analyzer)
             switch(Analyzer){
                 
-                case "898", makeRune(RUNE_AAM) break             # AAM [ RIGHT ]
-                case "868", makeRune(RUNE_AAM) break             # AAM [ RIGHT ]
-                case "988", makeRune(RUNE_VITAE) break          # VITAE [ RIGHT UP ]
-                case "9888", makeRune(RUNE_VITAE) break         # VITAE [ RIGHT UP ]
+                case "898", makeRune(RUNE_AAM) break              # AAM [ RIGHT ]
+                case "868", makeRune(RUNE_AAM) break              # AAM [ RIGHT ]
+                case "888", makeRune(RUNE_VITAE) break            # VITAE [ RIGHT UP ]        
                 
             }
             
