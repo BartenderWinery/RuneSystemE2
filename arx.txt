@@ -6,7 +6,7 @@
 @name Arx Fatalis Rune Spells
 
 # Rune Enums
-@persist [RUNE_AAM RUNE_VITAE]
+@persist [RUNE_AAM RUNE_VITAE RUNE_ZEDRUM]
 
 # Dir Enums
 @persist [AUP AUPRIGHT ARIGHT ADOWNRIGHT ADOWN ADOWNLEFT ALEFT AUPLEFT]
@@ -43,6 +43,7 @@ if(first()){
     ###  RUNE ENUMS ###
     RUNE_AAM        = 1
     RUNE_VITAE      = 2
+    RUNE_VITAE      = 3
     ###################
 
     # Vars
@@ -72,6 +73,7 @@ if(first()){
         
         holoPos(801,owner():toWorld(vec(0,0,owner():height()/2)))
         holoEntity(801):soundPlay(2,0,"ambient/levels/citadel/pod_close1.wav")
+        
         # Rune Functions
         if(R == RUNE_AAM){
             propSpawn("models/props_phx/torpedo.mdl",FirePos,ang(0,0,0),1):propBreak()
@@ -85,8 +87,17 @@ if(first()){
             SUMMON:setPos(owner():shootPos())
             SUMMON:setMass(444)
             SUMMON:propFreeze(0)
-            SUMMON:applyForce(((owner():aimPos()-owner():shootPos())*(SUMMON:mass()*444)))
+            SUMMON:applyForce(((owner():aimPos()-SUMMON:pos())*(SUMMON:mass()*444)))
             print("VITAE!")
+        }
+        if(R == RUNE_ZEDRUM){
+            holoDelete(803)
+            holoCreate(803)
+            holoAlpha(803,0)
+            holoModel(803,"models/props_combine/breenglobe.mdl")
+            holoEntity(803):ignite(999)
+            holoPos(803,owner():aimPos())
+            print("ZEDRUM!")
         }
     }
     
@@ -164,7 +175,7 @@ if(first()){
             # From Old point to New Point
             local D = PList[I-1,vector] - PList[I,vector]
 
-            if(length2(D) > 0.01){
+            if(length2(D) > 0.05){
                 
                 # Define A and B absolute values of X and Y        
                 local A = abs(D:x())
@@ -316,7 +327,7 @@ if(clk("analysis")){
             PList:clear()
             
             # Last 3 occurences of Analyzer
-            local Analyzer = LastSpell:concat(""):sub(LastSpell:count()-2,LastSpell:count())
+            local Analyzer = LastSpell:concat(""):sub(LastSpell:count()-7,LastSpell:count())
             
             # Delete Flares
             for(I=0,798){
@@ -328,17 +339,27 @@ if(clk("analysis")){
             print(Analyzer)        # Print Pattern
             
             switch(Analyzer){
-                case "389", makeRune(RUNE_AAM) break              # AAM [ RIGHT ]
-                case "388", makeRune(RUNE_AAM) break              # AAM [ RIGHT ]
-                case "868", makeRune(RUNE_AAM) break              # AAM [ RIGHT ]
-                case "888", makeRune(RUNE_VITAE) break            # VITAE [ RIGHT UP ]        
+                case "389", makeRune(RUNE_AAM) break             # AAM [ RIGHT ]
+                case "868", makeRune(RUNE_AAM) break
+                case "838", makeRune(RUNE_AAM) break
+                case "98", makeRune(RUNE_VITAE) break            # VITAE [ RIGHT UP ]  
+                case "89", makeRune(RUNE_VITAE) break 
+                case "88", makeRune(RUNE_VITAE) break
+                case "8688888", makeRune(RUNE_ZEDRUM) break      # ZEDRUM [ STRAIGHT INVERTED Z ]  
+                case "68888888", makeRune(RUNE_ZEDRUM) break      
+                case "86888888", makeRune(RUNE_ZEDRUM) break
+                case "86888888", makeRune(RUNE_ZEDRUM) break
+                case "8389888", makeRune(RUNE_ZEDRUM) break
+                case "83898888", makeRune(RUNE_ZEDRUM) break
+                case "39888886", makeRune(RUNE_ZEDRUM) break
+                case "83889888", makeRune(RUNE_ZEDRUM) break
             }
             
         }
     }
     
     # Loop
-    timer("analysis",16)
+    timer("analysis",45)
 }
 
 ##### END TIMERS #####
