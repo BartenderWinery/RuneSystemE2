@@ -342,14 +342,13 @@ if(clk("analysis")){
                 case "389", makeRune(RUNE_AAM) break             # AAM [ RIGHT ]
                 case "868", makeRune(RUNE_AAM) break
                 case "838", makeRune(RUNE_AAM) break
-                case "98", makeRune(RUNE_VITAE) break            # VITAE [ RIGHT UP ]  
-                case "89", makeRune(RUNE_VITAE) break 
-                case "88", makeRune(RUNE_VITAE) break
+                case "8688788", makeRune(RUNE_VITAE) break       # VITAE [ RIGHT UP ]  
+                case "8688878", makeRune(RUNE_VITAE) break
+                case "8389888", makeRune(RUNE_VITAE) break
                 case "8688888", makeRune(RUNE_ZEDRUM) break      # ZEDRUM [ STRAIGHT INVERTED Z ]  
                 case "68888888", makeRune(RUNE_ZEDRUM) break      
                 case "86888888", makeRune(RUNE_ZEDRUM) break
                 case "86888888", makeRune(RUNE_ZEDRUM) break
-                case "8389888", makeRune(RUNE_ZEDRUM) break
                 case "83898888", makeRune(RUNE_ZEDRUM) break
                 case "39888886", makeRune(RUNE_ZEDRUM) break
                 case "83889888", makeRune(RUNE_ZEDRUM) break
@@ -359,7 +358,7 @@ if(clk("analysis")){
     }
     
     # Loop
-    timer("analysis",45)
+    timer("analysis",60)
 }
 
 ##### END TIMERS #####
