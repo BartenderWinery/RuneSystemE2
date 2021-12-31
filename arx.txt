@@ -350,7 +350,7 @@ if(clk("analysis")){
     }
     
     # Loop
-    timer("analysis",65)
+    timer("analysis",60)
 }
 
 ##### END TIMERS #####
