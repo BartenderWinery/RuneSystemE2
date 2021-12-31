@@ -116,6 +116,10 @@ if(first()){
 
             Valid = 1       
         }
+        if(Pat == ""+RUNE_RHAA+RUNE_MEGA){
+            concmd("say TEST BIND BOUND BY RHAA MEGA RUNES")
+            Valid = 1       
+        }
         if(Pat == ""+RUNE_AAM+RUNE_VITAE){
             owner():plySetPos(owner():aimPos())   
             Valid = 1       
