@@ -146,7 +146,7 @@ if(first()){
             SUMMON:setPos(owner():shootPos())
             SUMMON:setMass(444)
             SUMMON:propFreeze(0)
-            SUMMON:applyForce(((owner():aimPos()-owner():shootPos())*(SUMMON:mass()*444))) 
+            SUMMON:applyForce(((owner():aimPos()-owner():shootPos())*(SUMMON:mass()*11))) 
             Valid = 1       
         }
         if(Valid){
@@ -171,11 +171,10 @@ if(first()){
         
         holoPos(801,owner():toWorld(vec(0,0,owner():height()/2)))
         local Sound1 = "ambient/hallow0"+randint(4,8)+".wav"
-        #local Sound1 = "vo/npc/vortigaunt/vortigese03.wav"
+
         holoEntity(801):soundPlay(2,0,Sound1)
         soundPitch(2,70)
-        #holoEntity(801):soundPlay(4,0,Sound1)
-        #soundPitch(4,55)        
+
         # Rune Functions
         if(R == RUNE_AAM){
             printColor(vec(255,255,155),"AAM!")
@@ -428,19 +427,32 @@ if(clk("analysis")){
             
             ### Rune Definitions ###
             
-            if(LEARNING){
+            if(1){
                 printColor(vec(255,255,155),Analyzer)        # Print Pattern
             }
             
             # Complex
-            if(Analyzer:sub(Analyzer:length(),Analyzer:length()) != "7" && Analyzer:sub(Analyzer:length(),Analyzer:length()) != "4"){
+            if(Analyzer:sub(Analyzer:length(),Analyzer:length()) == "2" || Analyzer:sub(Analyzer:length(),Analyzer:length()) == "3"){
                 if(Analyzer:sub(1,4) == "8286"){makeRune(RUNE_YOK)}
-                if(Analyzer:sub(1,4) == "8287"){makeRune(RUNE_YOK)}
+                elseif(Analyzer:sub(1,4) == "8287"){makeRune(RUNE_YOK)}
+                elseif(Analyzer:sub(1,4) == "8763"){makeRune(RUNE_YOK)}
+                elseif(Analyzer:sub(1,4) == "2879"){makeRune(RUNE_YOK)}
+                elseif(Analyzer:sub(1,4) == "2869"){makeRune(RUNE_YOK)}
+                elseif(Analyzer:sub(1,4) == "8769"){makeRune(RUNE_YOK)}
+                elseif(Analyzer:sub(1,4) == "8289"){makeRune(RUNE_YOK)}
+
             }
-            if(Analyzer:sub(Analyzer:length(),Analyzer:length()) == "4"){
+            if(Analyzer:sub(Analyzer:length(),Analyzer:length()) == "4" || Analyzer:sub(Analyzer:length(),Analyzer:length()) == "7"){
                 if(Analyzer:sub(1,4) == "8298"){makeRune(RUNE_VISTA)}
-                if(Analyzer:sub(1,4) == "8269"){makeRune(RUNE_VISTA)}
-                if(Analyzer:sub(1,4) == "8287"){makeRune(RUNE_VISTA)}
+                elseif(Analyzer:sub(1,4) == "8269"){makeRune(RUNE_VISTA)}
+                elseif(Analyzer:sub(1,4) == "8287"){makeRune(RUNE_VISTA)}
+                elseif(Analyzer:sub(1,4) == "2987"){makeRune(RUNE_VISTA)}
+                elseif(Analyzer:sub(1,4) == "6987"){makeRune(RUNE_VISTA)}
+                elseif(Analyzer:sub(Analyzer:length()-2,Analyzer:length()) == "874"){makeRune(RUNE_VISTA)}
+                elseif(Analyzer:sub(Analyzer:length()-2,Analyzer:length()) == "984"){makeRune(RUNE_VISTA)}
+                elseif(Analyzer:sub(Analyzer:length()-2,Analyzer:length()) == "874"){makeRune(RUNE_VISTA)}
+                elseif(Analyzer:sub(Analyzer:length()-2,Analyzer:length()) == "987"){makeRune(RUNE_VISTA)}
+                elseif(Analyzer:sub(1,4) == "4848"){makeRune(RUNE_VISTA)}
             }
             
 
