@@ -43,11 +43,11 @@ if(first()){
     ###  RUNE ENUMS ###
     RUNE_AAM        = 1
     RUNE_VITAE      = 2
-    RUNE_VITAE      = 3
+    RUNE_ZEDRUM      = 3
     ###################
 
     # Vars
-    MAX_POINTS = 200
+    MAX_POINTS = 300
     DRAWPOINT = 1
     
     # Init
@@ -175,65 +175,63 @@ if(first()){
             # From Old point to New Point
             local D = PList[I-1,vector] - PList[I,vector]
 
-            if(length2(D) > 0.01){
+            if(1){
                 
                 # Define A and B absolute values of X and Y        
                 local A = abs(D:x())
                 local B = abs(D:y())
-                
-                if(B != 0 && A / B > 0.4 && A / B < 2.5){   #  /
+                if(B != 0 && A / B > 0.9 && A / B < 1){   #  /
                     if(D:x() < 0 && D:y() < 0){
                         if(Lastdir != ADOWNRIGHT){
                             Lastdir = ADOWNRIGHT
-                            DIRS[I,number] = ADOWNRIGHT
                             CDIR++
+                            DIRS[CDIR,number] = ADOWNRIGHT
                         }
                     }elseif(D:x() > 0 && D:y() < 0){
                         if(Lastdir != ADOWNLEFT){
                             Lastdir = ADOWNLEFT
-                            DIRS[I,number] = ADOWNLEFT
                             CDIR++
+                            DIRS[CDIR,number] = ADOWNLEFT
                         }
                     }elseif(D:x() < 0 && D:y() > 0){
                         if(Lastdir != AUPRIGHT){
                             Lastdir = AUPRIGHT
-                            
-                            DIRS[I,number] = AUPRIGHT
                             CDIR++
+                            DIRS[CDIR,number] = AUPRIGHT
                         }                    
                     }elseif(D:x() > 0 && D:y() > 0){
                         if(Lastdir != AUPLEFT){
                             Lastdir = AUPLEFT
-                            DIRS[I,number] = AUPLEFT
                             CDIR++
+                            DIRS[CDIR,number] = AUPLEFT
                         }                        
                     }
                 }elseif(A > B){                             # <->
                     if(D:x() < 0){
                         if(Lastdir != ARIGHT){
                             Lastdir = ARIGHT
-                            DIRS[I,number] = ARIGHT
                             CDIR++
+                            DIRS[CDIR,number] = ARIGHT
                         }
                     }else{
                         if(Lastdir != ALEFT){
                             Lastdir = ALEFT
-                            DIRS[I,number] = ALEFT
                             CDIR++
+                            DIRS[CDIR,number] = ALEFT
                         } 
                     }
                 }else{                                      #  |
                     if(D:y() < 0){
                         if(Lastdir != ADOWN){
                             Lastdir = ADOWN
-                            DIRS[I,number] = ADOWN
                             CDIR++
+                            DIRS[CDIR,number] = ADOWN
                         }
                     }else{
                         if(Lastdir != AUP){
                             Lastdir = AUP
-                            DIRS[I,number] = AUP
                             CDIR++
+                            DIRS[CDIR,number] = AUP
                         } 
                     }               
                 }
@@ -342,16 +340,19 @@ if(clk("analysis")){
                 case "389", makeRune(RUNE_AAM) break             # AAM [ RIGHT ]
                 case "868", makeRune(RUNE_AAM) break
                 case "838", makeRune(RUNE_AAM) break
-                case "8688788", makeRune(RUNE_VITAE) break       # VITAE [ RIGHT UP ]  
-                case "88", makeRune(RUNE_VITAE) break
+                case "398", makeRune(RUNE_AAM) break
+                case "839", makeRune(RUNE_AAM) break
+                case "686", makeRune(RUNE_VITAE) break       # VITAE [ RIGHT UP ]  
+                case "62", makeRune(RUNE_VITAE) break
                 case "68", makeRune(RUNE_VITAE) break
-                case "8688888", makeRune(RUNE_ZEDRUM) break      # ZEDRUM [ STRAIGHT INVERTED Z ]  
-                case "68888888", makeRune(RUNE_ZEDRUM) break      
-                case "86888888", makeRune(RUNE_ZEDRUM) break
-                case "86888888", makeRune(RUNE_ZEDRUM) break
-                case "83898888", makeRune(RUNE_ZEDRUM) break
-                case "39888886", makeRune(RUNE_ZEDRUM) break
-                case "83889888", makeRune(RUNE_ZEDRUM) break
+                case "86863268", makeRune(RUNE_ZEDRUM) break      # ZEDRUM [ STRAIGHT INVERTED Z ]  
+                case "86862328", makeRune(RUNE_ZEDRUM) break      
+                case "8686268", makeRune(RUNE_ZEDRUM) break
+                case "8686878", makeRune(RUNE_ZEDRUM) break
+                case "8686287", makeRune(RUNE_ZEDRUM) break
+                case "68632628", makeRune(RUNE_ZEDRUM) break
+                case "8686328", makeRune(RUNE_ZEDRUM) break
+                case "68632328", makeRune(RUNE_ZEDRUM) break
             }
             
         }
