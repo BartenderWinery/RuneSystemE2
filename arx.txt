@@ -12,7 +12,7 @@
 @persist [AUP AUPRIGHT ARIGHT ADOWNRIGHT ADOWN ADOWNLEFT ALEFT AUPLEFT]
 
 # Numbers 
-@persist [INIT_Num DEBUG MAX_POINTS Unreachable FirstPoint DRAWPOINT]
+@persist [INIT_Num DEBUG MAX_POINTS Unreachable FirstPoint DRAWPOINT LEARNING]
 
 # Arrays, Tables
 @persist [INIT_Arr PList]:array [DIR_ENUM INIT_Tbl RunePattern SpellMoves LastSpell]:table
@@ -29,7 +29,8 @@ if(first()){
     hint("Hold C then draw runes with Mouse1",2)
     
     # DEBUG: turn this on for more info.
-    DEBUG = 1
+    DEBUG = 0
+    LEARNING = 0
     
     #### DIR ENUMS ####
     AUP             = 0
@@ -380,15 +381,16 @@ if(clk("analysis")){
             
             ### Rune Definitions ###
             
-            print(Analyzer)        # Print Pattern
-        
-            # Complex
+            if(LEARNING){
+                print(Analyzer)        # Print Pattern
+            }
             
-            #if(Analyzer:sub(1,5) == "82863"){makeRune(RUNE_YOK)}
+            # Complex
             if(Analyzer:sub(Analyzer:length(),Analyzer:length()) != "7" ){
                 if(Analyzer:sub(1,4) == "8286"){makeRune(RUNE_YOK)}
                 if(Analyzer:sub(1,4) == "8287"){makeRune(RUNE_YOK)}
             }
+            
             # Simple
             switch(Analyzer){
                 case "826", makeRune(RUNE_AAM) break             # AAM [ RIGHT ]
