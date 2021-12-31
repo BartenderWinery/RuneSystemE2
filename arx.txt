@@ -18,7 +18,7 @@
 @persist [INIT_Arr PList]:array [DIR_ENUM INIT_Tbl RunePattern SpellMoves LastSpell]:table
 
 # Strings
-@persist [INIT_Str ]:string
+@persist [INIT_Str Runes]:string
 
 # Entities
 @persist [INIT_Ent SUMMON]:entity
@@ -27,6 +27,7 @@
 if(first()){
     # Tell People how it works
     hint("Hold C then draw runes with Mouse1",2)
+    
     # DEBUG: turn this on for more info.
     DEBUG = 1
     
@@ -50,6 +51,7 @@ if(first()){
     # Vars
     MAX_POINTS = 100
     DRAWPOINT = 1
+    Runes = ""
     
     # Init
     FirstPoint = 1
@@ -63,24 +65,48 @@ if(first()){
     }
     
     # Make Rune
+    function makeSpell(Pat:string){
+        local Valid = 0
+        if(Pat == ""+RUNE_AAM+RUNE_YOK){
+            holoDelete(803)
+            holoCreate(803)
+            holoAlpha(803,0)
+            holoModel(803,"models/props_combine/breenglobe.mdl")
+            holoEntity(803):ignite(999)
+            holoPos(803,owner():aimPos())     
+            Valid = 1       
+        }
+        if(Valid){
+            # Sound       
+            soundStop(3)
+            holoCreate(802)
+            holoAlpha(802,0)
+            holoPos(802,owner():toWorld(vec(0,0,owner():height()/2)))
+            holoEntity(802):soundPlay(3,0,"ambient/energy/weld1.wav")
+            soundPitch(3,145)
+        }
+    }
     function makeRune(R){
         
         # Cursor Trace Pos
         FirePos = owner():eyeTraceCursor():pos()
         
         # Sound
+        soundStop(2)
         holoCreate(801)
         holoAlpha(801,0)
         
         holoPos(801,owner():toWorld(vec(0,0,owner():height()/2)))
-        holoEntity(801):soundPlay(2,0,"ambient/levels/citadel/pod_close1.wav")
+        holoEntity(801):soundPlay(2,0,"ambient/hallow0"+randint(1,7)+".wav")
+        soundPitch(2,70)
         
         # Rune Functions
         if(R == RUNE_AAM){
-            propSpawn("models/props_phx/torpedo.mdl",FirePos,ang(0,0,0),1):propBreak()
+            #propSpawn("models/props_phx/torpedo.mdl",FirePos,ang(0,0,0),1):propBreak()
             print("AAM!")
         }
         if(R == RUNE_VITAE){
+            #[
             SUMMON:propDelete()
             SUMMON = propSpawn("models/hunter/blocks/cube2x2x2.mdl",ang(0,0,0),1)
             noCollide(SUMMON,owner())
@@ -89,17 +115,20 @@ if(first()){
             SUMMON:setMass(444)
             SUMMON:propFreeze(0)
             SUMMON:applyForce(((owner():aimPos()-owner():shootPos())*(SUMMON:mass()*444)))
+            ]#
             print("VITAE!")
         }
         if(R == RUNE_YOK){
+            #[
             holoDelete(803)
             holoCreate(803)
             holoAlpha(803,0)
             holoModel(803,"models/props_combine/breenglobe.mdl")
             holoEntity(803):ignite(999)
-            holoPos(803,owner():aimPos())
+            holoPos(803,owner():aimPos())]#
             print("YOK!")
         }
+        Runes = Runes + R
     }
     
     # Add Point
@@ -310,6 +339,8 @@ if(clk("analysis")){
         }else{       
             # Stop Sound
             soundStop(1)
+            makeSpell(Runes)
+            Runes = ""
         }
     }
     
