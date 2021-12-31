@@ -80,6 +80,19 @@ if(first()){
             owner():plySetPos(owner():aimPos())   
             Valid = 1       
         }
+        if(Pat == ""+RUNE_AAM+RUNE_AAM){
+            AimPos = owner():aimPos()
+            SUMMON:propDelete()
+            SUMMON = propSpawn("models/hunter/blocks/cube05x05x05.mdl",ang(0,0,0),1)
+            noCollide(SUMMON,owner())
+            SUMMON:setAlpha(0)
+            SUMMON:setTrails(100,44,4,"trails/laser",vec(0,255,155),255)
+            SUMMON:setPos(owner():shootPos())
+            SUMMON:setMass(444)
+            SUMMON:propFreeze(0)
+            SUMMON:applyForce(((owner():aimPos()-owner():shootPos())*(SUMMON:mass()*444))) 
+            Valid = 1       
+        }
         if(Valid){
             # Sound       
             soundStop(3)
