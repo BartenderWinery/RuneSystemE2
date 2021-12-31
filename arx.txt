@@ -94,6 +94,10 @@ if(first()){
             owner():plySetPos(owner():aimPos())   
             Valid = 1       
         }
+        if(Pat == ""+RUNE_RHAA){
+            propSpawn("models/props_phx/torpedo.mdl",owner():aimPos(),ang(0,0,0),1):propBreak() 
+            Valid = 1       
+        }
         if(Pat == ""+RUNE_VITAE+RUNE_MEGA){
             owner():plySetSpeed(400)  
             Valid = 1       
@@ -121,8 +125,8 @@ if(first()){
             holoCreate(802)
             holoAlpha(802,0)
             holoPos(802,owner():toWorld(vec(0,0,owner():height()/2)))
-            holoEntity(802):soundPlay(3,0,"ambient/energy/weld1.wav")
-            soundPitch(3,145)
+            holoEntity(802):soundPlay(3,0,"ambient/levels/citadel/portal_beam_shoot6.wav")
+            soundPitch(3,255)
         }
     }
     function makeRune(R){
@@ -136,9 +140,12 @@ if(first()){
         holoAlpha(801,0)
         
         holoPos(801,owner():toWorld(vec(0,0,owner():height()/2)))
-        holoEntity(801):soundPlay(2,0,"ambient/hallow0"+randint(4,8)+".wav")
+        local Sound1 = "ambient/hallow0"+randint(4,8)+".wav"
+        #local Sound1 = "vo/npc/vortigaunt/vortigese03.wav"
+        holoEntity(801):soundPlay(2,0,Sound1)
         soundPitch(2,70)
-        
+        #holoEntity(801):soundPlay(4,0,Sound1)
+        #soundPitch(4,55)        
         # Rune Functions
         if(R == RUNE_AAM){
             printColor(vec(255,255,155),"AAM!")
