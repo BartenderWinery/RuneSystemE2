@@ -47,7 +47,7 @@ if(first()){
     ###################
 
     # Vars
-    MAX_POINTS = 300
+    MAX_POINTS = 100
     DRAWPOINT = 1
     
     # Init
@@ -174,31 +174,31 @@ if(first()){
         for(I=1,PList:count()){
             # From Old point to New Point
             local D = PList[I-1,vector] - PList[I,vector]
-            if(length2(D) > 0.5){
+            if(length2(D) > 0.2){
                 
                 # Define A and B absolute values of X and Y        
                 local A = abs(D:x())
-                local B = abs(D:y())
-                if(B != 0 && A / B > 0.9 && A / B < 1){   #  /
-                    if(D:x() < 0 && D:y() < 0){
+                local B = abs(D:z())
+                if(B != 0 && A / B > 0.5 && A / B < 1){   #  /
+                    if(D:x() < 0 && D:z() < 0){
                         if(Lastdir != ADOWNRIGHT){
                             Lastdir = ADOWNRIGHT
                             CDIR++
                             DIRS[CDIR,number] = ADOWNRIGHT
                         }
-                    }elseif(D:x() > 0 && D:y() < 0){
+                    }elseif(D:x() > 0 && D:z() < 0){
                         if(Lastdir != ADOWNLEFT){
                             Lastdir = ADOWNLEFT
                             CDIR++
                             DIRS[CDIR,number] = ADOWNLEFT
                         }
-                    }elseif(D:x() < 0 && D:y() > 0){
+                    }elseif(D:x() < 0 && D:z() > 0){
                         if(Lastdir != AUPRIGHT){
                             Lastdir = AUPRIGHT
                             CDIR++
                             DIRS[CDIR,number] = AUPRIGHT
                         }                    
-                    }elseif(D:x() > 0 && D:y() > 0){
+                    }elseif(D:x() > 0 && D:z() > 0){
                         if(Lastdir != AUPLEFT){
                             Lastdir = AUPLEFT
                             CDIR++
@@ -220,7 +220,7 @@ if(first()){
                         } 
                     }
                 }else{                                      #  |
-                    if(D:y() < 0){
+                    if(D:z() < 0){
                         if(Lastdir != ADOWN){
                             Lastdir = ADOWN
                             CDIR++
@@ -239,7 +239,6 @@ if(first()){
         }
         LastSpell = SpellMoves
         SpellMoves:clear()
-        
         if(CDIR > 0){
             for(I=0,CDIR){
                 switch(DIRS[I,number]){
@@ -335,25 +334,23 @@ if(clk("analysis")){
             
             print(Analyzer)        # Print Pattern
             
+            # Complex
+            
+            if(Analyzer:sub(1,4) == "8286"){makeRune(RUNE_YOK)}
+            if(Analyzer:sub(1,4) == "8287"){makeRune(RUNE_YOK)}
+                  
+            # Simple
             switch(Analyzer){
-                case "389", makeRune(RUNE_AAM) break             # AAM [ RIGHT ]
-                case "868", makeRune(RUNE_AAM) break
-                case "838", makeRune(RUNE_AAM) break
-                case "398", makeRune(RUNE_AAM) break
-                case "839", makeRune(RUNE_AAM) break
-                case "686", makeRune(RUNE_VITAE) break       # VITAE [ RIGHT UP ]  
-                case "62", makeRune(RUNE_VITAE) break
-                case "68", makeRune(RUNE_VITAE) break
-                case "628", makeRune(RUNE_YOK) break      # YOK [ Draw an L. At the end: up ]  
-                case "648", makeRune(RUNE_YOK) break 
-
+                case "826", makeRune(RUNE_AAM) break             # AAM [ RIGHT ]
+                case "42", makeRune(RUNE_VITAE) break       # VITAE [ RIGHT UP ]  
+                case "262", makeRune(RUNE_VITAE) break
             }
             
         }
     }
     
     # Loop
-    timer("analysis",50)
+    timer("analysis",65)
 }
 
 ##### END TIMERS #####
