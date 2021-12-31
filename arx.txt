@@ -6,7 +6,7 @@
 @name Arx Fatalis Rune Spells
 
 # Rune Enums
-@persist [RUNE_AAM RUNE_VITAE RUNE_ZEDRUM]
+@persist [RUNE_AAM RUNE_VITAE RUNE_YOK]
 
 # Dir Enums
 @persist [AUP AUPRIGHT ARIGHT ADOWNRIGHT ADOWN ADOWNLEFT ALEFT AUPLEFT]
@@ -43,7 +43,7 @@ if(first()){
     ###  RUNE ENUMS ###
     RUNE_AAM        = 1
     RUNE_VITAE      = 2
-    RUNE_ZEDRUM      = 3
+    RUNE_YOK      = 3
     ###################
 
     # Vars
@@ -90,14 +90,14 @@ if(first()){
             SUMMON:applyForce(((owner():aimPos()-owner():shootPos())*(SUMMON:mass()*444)))
             print("VITAE!")
         }
-        if(R == RUNE_ZEDRUM){
+        if(R == RUNE_YOK){
             holoDelete(803)
             holoCreate(803)
             holoAlpha(803,0)
             holoModel(803,"models/props_combine/breenglobe.mdl")
             holoEntity(803):ignite(999)
             holoPos(803,owner():aimPos())
-            print("ZEDRUM!")
+            print("YOK!")
         }
     }
     
@@ -174,7 +174,7 @@ if(first()){
         for(I=1,PList:count()){
             # From Old point to New Point
             local D = PList[I-1,vector] - PList[I,vector]
-            if(length2(D) > 0.35){
+            if(length2(D) > 0.5){
                 
                 # Define A and B absolute values of X and Y        
                 local A = abs(D:x())
@@ -344,19 +344,8 @@ if(clk("analysis")){
                 case "686", makeRune(RUNE_VITAE) break       # VITAE [ RIGHT UP ]  
                 case "62", makeRune(RUNE_VITAE) break
                 case "68", makeRune(RUNE_VITAE) break
-                case "86863268", makeRune(RUNE_ZEDRUM) break      # ZEDRUM [ STRAIGHT INVERTED Z ]  
-                case "86862328", makeRune(RUNE_ZEDRUM) break      
-                case "8686268", makeRune(RUNE_ZEDRUM) break
-                case "8686878", makeRune(RUNE_ZEDRUM) break
-                case "8686287", makeRune(RUNE_ZEDRUM) break
-                case "68632628", makeRune(RUNE_ZEDRUM) break
-                case "8686328", makeRune(RUNE_ZEDRUM) break
-                case "68632328", makeRune(RUNE_ZEDRUM) break
-                case "8398628", makeRune(RUNE_ZEDRUM) break
-                case "8269828", makeRune(RUNE_ZEDRUM) break
-                case "69824698", makeRune(RUNE_ZEDRUM) break
-                case "82682698", makeRune(RUNE_ZEDRUM) break
-                case "28", makeRune(RUNE_ZEDRUM) break
+                case "628", makeRune(RUNE_YOK) break      # YOK [ Draw an L. At the end: up ]  
+                case "648", makeRune(RUNE_YOK) break 
 
             }
             
@@ -364,7 +353,7 @@ if(clk("analysis")){
     }
     
     # Loop
-    timer("analysis",60)
+    timer("analysis",50)
 }
 
 ##### END TIMERS #####
