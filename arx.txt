@@ -412,17 +412,20 @@ if(clk("analysis")){
             
             ### Rune Definitions ###
             
-            if(LEARNING){
+            if(1){
                 printColor(vec(255,255,155),Analyzer)        # Print Pattern
             }
             
             # Complex
-            if(Analyzer:sub(Analyzer:length(),Analyzer:length()) != "7"){
+            if(Analyzer:sub(Analyzer:length(),Analyzer:length()) != "7" && Analyzer:sub(Analyzer:length(),Analyzer:length()) != "4"){
                 if(Analyzer:sub(1,4) == "8286"){makeRune(RUNE_YOK)}
                 if(Analyzer:sub(1,4) == "8287"){makeRune(RUNE_YOK)}
             }
-            if(Analyzer:sub(1,4) == "8298"){makeRune(RUNE_VISTA)}
-            if(Analyzer:sub(1,4) == "8269"){makeRune(RUNE_VISTA)}
+            if(Analyzer:sub(Analyzer:length(),Analyzer:length()) == "4"){
+                if(Analyzer:sub(1,4) == "8298"){makeRune(RUNE_VISTA)}
+                if(Analyzer:sub(1,4) == "8269"){makeRune(RUNE_VISTA)}
+                if(Analyzer:sub(1,4) == "8287"){makeRune(RUNE_VISTA)}
+            }
             
 
             # Simple
