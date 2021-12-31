@@ -76,6 +76,10 @@ if(first()){
             holoPos(803,owner():aimPos())     
             Valid = 1       
         }
+        if(Pat == ""+RUNE_AAM+RUNE_VITAE){
+            owner():plySetPos(owner():aimPos())   
+            Valid = 1       
+        }
         if(Valid){
             # Sound       
             soundStop(3)
