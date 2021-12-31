@@ -337,10 +337,8 @@ if(clk("analysis")){
             
             # Complex
             
-            if(Analyzer:sub(1,4) == "8286"){makeRune(RUNE_YOK)}
+            if(Analyzer:sub(1,5) == "82863"){makeRune(RUNE_YOK)}
             if(Analyzer:sub(1,4) == "8287"){makeRune(RUNE_YOK)}
-            if(Analyzer:sub(1,4) == "2876"){makeRune(RUNE_YOK)}            
-                  
             # Simple
             switch(Analyzer){
                 case "826", makeRune(RUNE_AAM) break             # AAM [ RIGHT ]
