@@ -174,8 +174,7 @@ if(first()){
         for(I=1,PList:count()){
             # From Old point to New Point
             local D = PList[I-1,vector] - PList[I,vector]
-
-            if(1){
+            if(length2(D) > 0.35){
                 
                 # Define A and B absolute values of X and Y        
                 local A = abs(D:x())
@@ -353,6 +352,12 @@ if(clk("analysis")){
                 case "68632628", makeRune(RUNE_ZEDRUM) break
                 case "8686328", makeRune(RUNE_ZEDRUM) break
                 case "68632328", makeRune(RUNE_ZEDRUM) break
+                case "8398628", makeRune(RUNE_ZEDRUM) break
+                case "8269828", makeRune(RUNE_ZEDRUM) break
+                case "69824698", makeRune(RUNE_ZEDRUM) break
+                case "82682698", makeRune(RUNE_ZEDRUM) break
+                case "28", makeRune(RUNE_ZEDRUM) break
+
             }
             
         }
