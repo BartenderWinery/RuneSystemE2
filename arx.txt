@@ -81,6 +81,18 @@ if(first()){
             holoParent(803,owner():aimEntity())   
             Valid = 1       
         }
+        if(Pat == ""+RUNE_AAM+RUNE_VITAE+RUNE_YOK){
+            local PAR = owner():aimEntity()
+            holoDelete(803)
+            holoCreate(803)
+            holoAlpha(803,0)
+            holoModel(803,PAR:model())
+            holoEntity(803):ignite(999)
+            holoPos(803,PAR:pos())
+            holoAng(803,PAR:angles())
+            holoParent(803,PAR)   
+            Valid = 1       
+        }
         if(Pat == ""+RUNE_AAM+RUNE_YOK+RUNE_MEGA){
             holoDelete(803)
             holoCreate(803)
