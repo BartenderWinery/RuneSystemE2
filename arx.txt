@@ -80,6 +80,16 @@ if(first()){
             holoParent(803,owner():aimEntity())   
             Valid = 1       
         }
+        if(Pat == ""+RUNE_AAM+RUNE_YOK+RUNE_MEGA){
+            holoDelete(803)
+            holoCreate(803)
+            holoAlpha(803,0)
+            holoModel(803,"models/hunter/blocks/cube8x8x4.mdl")
+            holoEntity(803):ignite(999)
+            holoPos(803,owner():aimPos())  
+            holoParent(803,owner():aimEntity())   
+            Valid = 1       
+        }
         if(Pat == ""+RUNE_AAM+RUNE_VITAE){
             owner():plySetPos(owner():aimPos())   
             Valid = 1       
