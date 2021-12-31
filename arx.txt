@@ -6,7 +6,7 @@
 @name Arx Fatalis Rune Spells
 
 # Rune Enums
-@persist [RUNE_AAM RUNE_VITAE RUNE_YOK]
+@persist [RUNE_AAM RUNE_VITAE RUNE_YOK RUNE_RHAA RUNE_MEGA]
 
 # Dir Enums
 @persist [AUP AUPRIGHT ARIGHT ADOWNRIGHT ADOWN ADOWNLEFT ALEFT AUPLEFT]
@@ -45,7 +45,9 @@ if(first()){
     ###  RUNE ENUMS ###
     RUNE_AAM        = 1
     RUNE_VITAE      = 2
-    RUNE_YOK      = 3
+    RUNE_YOK        = 3
+    RUNE_RHAA       = 4
+    RUNE_MEGA       = 5
     ###################
 
     # Vars
@@ -73,17 +75,26 @@ if(first()){
             holoAlpha(803,0)
             holoModel(803,"models/props_combine/breenglobe.mdl")
             holoEntity(803):ignite(999)
-            holoPos(803,owner():aimPos())     
+            holoPos(803,owner():aimPos())  
+            holoParent(803,owner():aimEntity())   
             Valid = 1       
         }
         if(Pat == ""+RUNE_AAM+RUNE_VITAE){
             owner():plySetPos(owner():aimPos())   
             Valid = 1       
         }
+        if(Pat == ""+RUNE_VITAE+RUNE_MEGA){
+            owner():plySetSpeed(400)  
+            Valid = 1       
+        }
+        if(Pat == ""+RUNE_VITAE+RUNE_RHAA){
+            owner():plySetSpeed(200)  
+            Valid = 1       
+        }
         if(Pat == ""+RUNE_AAM+RUNE_AAM){
             AimPos = owner():aimPos()
             SUMMON:propDelete()
-            SUMMON = propSpawn("models/hunter/blocks/cube05x05x05.mdl",ang(0,0,0),1)
+            SUMMON = propSpawn("models/hunter/blocks/cube2x2x2.mdl",ang(0,0,0),1)
             noCollide(SUMMON,owner())
             SUMMON:setAlpha(0)
             SUMMON:setTrails(100,44,4,"trails/laser",vec(0,255,155),255)
@@ -119,30 +130,18 @@ if(first()){
         
         # Rune Functions
         if(R == RUNE_AAM){
-            #propSpawn("models/props_phx/torpedo.mdl",FirePos,ang(0,0,0),1):propBreak()
             print("AAM!")
         }
+        if(R == RUNE_RHAA){
+            print("RHAA!")
+        }
+        if(R == RUNE_MEGA){
+            print("MEGA!")
+        }
         if(R == RUNE_VITAE){
-            #[
-            SUMMON:propDelete()
-            SUMMON = propSpawn("models/hunter/blocks/cube2x2x2.mdl",ang(0,0,0),1)
-            noCollide(SUMMON,owner())
-            SUMMON:setAlpha(255)
-            SUMMON:setPos(owner():shootPos())
-            SUMMON:setMass(444)
-            SUMMON:propFreeze(0)
-            SUMMON:applyForce(((owner():aimPos()-owner():shootPos())*(SUMMON:mass()*444)))
-            ]#
             print("VITAE!")
         }
         if(R == RUNE_YOK){
-            #[
-            holoDelete(803)
-            holoCreate(803)
-            holoAlpha(803,0)
-            holoModel(803,"models/props_combine/breenglobe.mdl")
-            holoEntity(803):ignite(999)
-            holoPos(803,owner():aimPos())]#
             print("YOK!")
         }
         Runes = Runes + R
@@ -381,8 +380,8 @@ if(clk("analysis")){
             
             ### Rune Definitions ###
             
-            #print(Analyzer)        # Print Pattern
-            
+            print(Analyzer)        # Print Pattern
+        
             # Complex
             
             #if(Analyzer:sub(1,5) == "82863"){makeRune(RUNE_YOK)}
@@ -395,6 +394,8 @@ if(clk("analysis")){
                 case "826", makeRune(RUNE_AAM) break             # AAM [ RIGHT ]
                 case "42", makeRune(RUNE_VITAE) break       # VITAE [ RIGHT UP ]  
                 case "262", makeRune(RUNE_VITAE) break
+                case "828", makeRune(RUNE_RHAA) break      # RHAA [ DOWN ]
+                case "82", makeRune(RUNE_MEGA) break       # MEGA [ UP ]
             }
             
         }
