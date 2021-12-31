@@ -25,7 +25,8 @@
 
 ##### START FIRST #####
 if(first()){
-    
+    # Tell People how it works
+    hint("Hold C then draw runes with Mouse1",2)
     # DEBUG: turn this on for more info.
     DEBUG = 1
     
@@ -284,7 +285,7 @@ if(clk("analysis")){
     local MOUSE1 = owner():keyAttack1()
     local C = owner():keyPressed("c")
     # Mouse1 is being held down
-    if(MOUSE1){
+    if(C && MOUSE1){
         # Flags W so we dont accidently hit entities
         rangerFlags("W")
         
@@ -338,6 +339,7 @@ if(clk("analysis")){
             
             if(Analyzer:sub(1,4) == "8286"){makeRune(RUNE_YOK)}
             if(Analyzer:sub(1,4) == "8287"){makeRune(RUNE_YOK)}
+            if(Analyzer:sub(1,4) == "2876"){makeRune(RUNE_YOK)}            
                   
             # Simple
             switch(Analyzer){
