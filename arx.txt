@@ -6,7 +6,7 @@
 @name Arx Fatalis Rune Spells
 
 # Rune Enums
-@persist [RUNE_AAM RUNE_VITAE RUNE_YOK RUNE_RHAA RUNE_MEGA]
+@persist [RUNE_AAM RUNE_VITAE RUNE_YOK RUNE_RHAA RUNE_MEGA RUNE_VISTA]
 
 # Dir Enums
 @persist [AUP AUPRIGHT ARIGHT ADOWNRIGHT ADOWN ADOWNLEFT ALEFT AUPLEFT]
@@ -49,6 +49,7 @@ if(first()){
     RUNE_YOK        = 3
     RUNE_RHAA       = 4
     RUNE_MEGA       = 5
+    RUNE_VISTA      = 6
     ###################
 
     # Vars
@@ -88,6 +89,19 @@ if(first()){
             holoEntity(803):ignite(999)
             holoPos(803,owner():aimPos())  
             holoParent(803,owner():aimEntity())   
+            Valid = 1       
+        }
+        if(Pat == ""+RUNE_VISTA+RUNE_RHAA){
+            
+            holoDelete(803)
+            holoCreate(803)
+            
+            holoModel(803,"models/hunter/misc/sphere2x2.mdl")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        holoMaterial(803,"engine/depthwrite")
+            holoPos(803,owner():aimPos())
+            holoScale(803,vec(155))
+            holoParent(803,owner():aimEntity())   
+
             Valid = 1       
         }
         if(Pat == ""+RUNE_AAM+RUNE_VITAE){
@@ -161,6 +175,9 @@ if(first()){
         }
         if(R == RUNE_YOK){
             printColor(vec(255,255,155),"YOK!")
+        }
+        if(R == RUNE_VISTA){
+            printColor(vec(255,255,155),"VISTA!")
         }
         Runes = Runes + R
     }
@@ -400,11 +417,14 @@ if(clk("analysis")){
             }
             
             # Complex
-            if(Analyzer:sub(Analyzer:length(),Analyzer:length()) != "7" ){
+            if(Analyzer:sub(Analyzer:length(),Analyzer:length()) != "7"){
                 if(Analyzer:sub(1,4) == "8286"){makeRune(RUNE_YOK)}
                 if(Analyzer:sub(1,4) == "8287"){makeRune(RUNE_YOK)}
             }
+            if(Analyzer:sub(1,4) == "8298"){makeRune(RUNE_VISTA)}
+            if(Analyzer:sub(1,4) == "8269"){makeRune(RUNE_VISTA)}
             
+
             # Simple
             switch(Analyzer){
                 case "826", makeRune(RUNE_AAM) break             # AAM [ RIGHT ]
