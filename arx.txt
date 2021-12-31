@@ -114,7 +114,7 @@ if(first()){
         holoAlpha(801,0)
         
         holoPos(801,owner():toWorld(vec(0,0,owner():height()/2)))
-        holoEntity(801):soundPlay(2,0,"ambient/hallow0"+randint(1,7)+".wav")
+        holoEntity(801):soundPlay(2,0,"ambient/hallow0"+randint(4,8)+".wav")
         soundPitch(2,70)
         
         # Rune Functions
@@ -381,7 +381,7 @@ if(clk("analysis")){
             
             ### Rune Definitions ###
             
-            print(Analyzer)        # Print Pattern
+            #print(Analyzer)        # Print Pattern
             
             # Complex
             
