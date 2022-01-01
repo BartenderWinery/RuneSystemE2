@@ -472,7 +472,7 @@ if(clk("analysis")){
                 elseif(Analyzer:sub(1,3) == "826" && Analyzer:sub(Analyzer:length()-2,Analyzer:length()) == "674"){makeRune(RUNE_TAAR)}
 
             }
-            if(Analyzer:sub(Analyzer:length()-3,Analyzer:length()) == "4698" || Analyzer:sub(Analyzer:length()-3,Analyzer:length()) == "9874"){
+            if(Analyzer:sub(Analyzer:length()-3,Analyzer:length()) == "4698" || Analyzer:sub(Analyzer:length()-3,Analyzer:length()) == "9874" || Analyzer:sub(Analyzer:length()-3,Analyzer:length()) ==  "8687"){
                     if(Analyzer:sub(1,4) == "8298"){makeRune(RUNE_VISTA)}
                     elseif(Analyzer:sub(1,4) == "8287"){makeRune(RUNE_VISTA)}
                     elseif(Analyzer:sub(1,4) == "2987"){makeRune(RUNE_VISTA)}
