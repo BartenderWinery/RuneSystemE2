@@ -642,33 +642,35 @@ if(clk("drawpoints")){
 # Check Portals
 if(clk("portals")){
     if(perf()){
-        # PORTAL 1
         local PORTAL1 = holoEntity(844)
         local PORTAL2 = holoEntity(845)
-        if(Chair1:driver():isPlayer()){
-            Chair1:setPos(PORTAL2:pos())
-        }else{
-            Chair1:setPos(PORTAL1:pos())
-            Chair1:setAng(PORTAL1:angles())      
-        }
-        if(Chair1:pos():distance(PORTAL2:pos()) < 180){
-            Chair1:ejectPod()
-            Chair1:setPos(PORTAL1:pos())
-            Chair1:setAng(PORTAL1:angles())
-        }
-        
-        # PORTAL 2    
-        if(Chair2:driver():isPlayer()){
-            Chair2:setPos(PORTAL1:pos())
-        }else{
-            Chair2:setPos(PORTAL2:pos())
-            Chair2:setAng(PORTAL2:angles())
+        # PORTAL 1
+        if(PORTAL1:isValid() && PORTAL2:isValid()){
+            if(Chair1:driver():isPlayer()){
+                Chair1:setPos(PORTAL2:pos())
+            }else{
+                Chair1:setPos(PORTAL1:pos())
+                Chair1:setAng(PORTAL1:angles())      
+            }
+            if(Chair1:pos():distance(PORTAL2:pos()) < 180){
+                Chair1:ejectPod()
+                Chair1:setPos(PORTAL1:pos())
+                Chair1:setAng(PORTAL1:angles())
+            }
             
-        }
-        if(Chair2:pos():distance(PORTAL1:pos()) < 180){
-            Chair2:ejectPod()
-            Chair2:setPos(PORTAL2:pos())
-            Chair2:setAng(PORTAL2:angles())
+            # PORTAL 2    
+            if(Chair2:driver():isPlayer()){
+                Chair2:setPos(PORTAL1:pos())
+            }else{
+                Chair2:setPos(PORTAL2:pos())
+                Chair2:setAng(PORTAL2:angles())
+                
+            }
+            if(Chair2:pos():distance(PORTAL1:pos()) < 180){
+                Chair2:ejectPod()
+                Chair2:setPos(PORTAL2:pos())
+                Chair2:setAng(PORTAL2:angles())
+            }
         }
     }
     timer("portals",1)
@@ -676,10 +678,12 @@ if(clk("portals")){
 
 # Move Projectiles and Collision Check
 if(clk("projectiles")){
-    holoPos(777,holoEntity(777):toWorld(vec(155,0,0)))
-    if(holoEntity(777):pos():distance(Shootpos) < 222){
-        propSpawn("models/props_phx/torpedo.mdl",holoEntity(777):pos(),ang(0,0,0),1):propBreak()
-        holoDelete(777)
+    if(holoEntity(777):isValid()){
+        holoPos(777,holoEntity(777):toWorld(vec(155,0,0)))
+        if(holoEntity(777):pos():distance(Shootpos) < 222){
+            propSpawn("models/props_phx/torpedo.mdl",holoEntity(777):pos(),ang(0,0,0),1):propBreak()
+            holoDelete(777)
+        }
     }
     timer("projectiles",10)
 }
