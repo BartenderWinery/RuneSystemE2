@@ -533,6 +533,8 @@ if(clk("analysis")){
                 case "828", makeRune(RUNE_RHAA) break      # RHAA [ DOWN ]
                 case "82", makeRune(RUNE_MEGA) break       # MEGA [ UP ]
                 case "86", makeRune(RUNE_TAAR) break       # TAAR
+                case "4", makeRune(RUNE_TAAR) break       # TAAR
+                case "84", makeRune(RUNE_TAAR) break       # TAAR
             }
             
         }
