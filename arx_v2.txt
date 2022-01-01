@@ -446,7 +446,7 @@ if(clk("analysis")){
             
             ### Rune Definitions ###
             
-            if(1){
+            if(LEARNING){
                 printColor(vec(255,255,155),Analyzer)        # Print Pattern
             }
             
@@ -484,9 +484,8 @@ if(clk("analysis")){
             }
             # Simple
             switch(Analyzer){
-                case "826", makeRune(RUNE_AAM) break             # AAM [ RIGHT ]
-                case "42", makeRune(RUNE_VITAE) break       # VITAE [ RIGHT UP ]  
-                case "262", makeRune(RUNE_VITAE) break
+                case "826", makeRune(RUNE_AAM) break       # AAM [ RIGHT ]
+                case "262", makeRune(RUNE_VITAE) break     # VITAE [ RIGHT UP ] 
                 case "828", makeRune(RUNE_RHAA) break      # RHAA [ DOWN ]
                 case "82", makeRune(RUNE_MEGA) break       # MEGA [ UP ]
             }
