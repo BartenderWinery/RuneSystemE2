@@ -134,14 +134,14 @@ if(first()){
         }
         if(Pat == ""+RUNE_VISTA+RUNE_RHAA){
             
-            holoDelete(803)
-            holoCreate(803)
+            holoDelete(837)
+            holoCreate(837)
             
-            holoModel(803,"models/hunter/misc/sphere2x2.mdl")
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        holoMaterial(803,"engine/depthwrite")
-            holoPos(803,owner():aimPos())
-            holoScale(803,vec(155))
-            holoParent(803,owner():aimEntity())   
+            holoModel(837,"models/hunter/misc/sphere2x2.mdl")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        holoMaterial(837,"engine/depthwrite")
+            holoPos(837,owner():aimPos())
+            holoScale(837,vec(155))
+            holoParent(837,owner():aimEntity())   
 
             Valid = 1       
         }
