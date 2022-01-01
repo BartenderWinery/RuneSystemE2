@@ -21,7 +21,7 @@
 @persist [INIT_Str Runes]:string
 
 # Entities
-@persist [INIT_Ent SUMMON]:entity
+@persist [INIT_Ent SUMMON Chair1 Chair2]:entity
 
 ##### START FIRST #####
 if(first()){
@@ -80,6 +80,34 @@ if(first()){
             holoEntity(803):ignite(999)
             holoPos(803,owner():aimPos())  
             holoParent(803,owner():aimEntity())   
+            Valid = 1       
+        }
+        if(Pat == ""+RUNE_AAM+RUNE_VITAE+RUNE_MEGA){
+            Chair1:propDelete()
+            Chair1 = seatSpawn("models/nova/airboat_seat.mdl",1)
+            Chair1:setAlpha(0)
+            holoDelete(844)
+            holoCreate(844)
+            holoModel(844,"hq_sphere")
+            holoMaterial(844,"models/props_combine/tpballglow")
+            holoColor(844,vec4(111,255,111,254))
+            holoPos(844,owner():aimPos()+vec(0,0,50))
+            holoScale(844,vec(4,4,6))
+            holoParent(844,owner():aimEntity())   
+            Valid = 1       
+        }
+        if(Pat == ""+RUNE_AAM+RUNE_VITAE+RUNE_RHAA){
+            Chair2:propDelete()
+            Chair2 = seatSpawn("models/nova/airboat_seat.mdl",1)
+            Chair2:setAlpha(0)
+            holoDelete(845)
+            holoCreate(845)
+            holoModel(845,"hq_sphere")
+            holoMaterial(845,"models/props_combine/tpballglow")
+            holoColor(845,vec4(255,155,111,254))
+            holoPos(845,owner():aimPos()+vec(0,0,50))
+            holoScale(845,vec(4,4,6))
+            holoParent(845,owner():aimEntity())   
             Valid = 1       
         }
         if(Pat == ""+RUNE_AAM+RUNE_VITAE+RUNE_YOK){
@@ -151,14 +179,27 @@ if(first()){
             SUMMON:ignite()
             Valid = 1       
         }
+        if(Pat == ""+RUNE_AAM+RUNE_TAAR){
+            AimPos = owner():aimPos()
+            SUMMON:propDelete()
+            SUMMON = propSpawn("models/props_c17/oildrum001_explosive.mdl",ang(0,0,0),1)
+            noCollide(SUMMON,owner())
+            SUMMON:setAlpha(0)
+            SUMMON:setTrails(100,44,4,"trails/laser",vec(55,255,155),255)
+            SUMMON:setPos(owner():shootPos())
+            SUMMON:setMass(50000)
+            SUMMON:propFreeze(0)
+            SUMMON:applyForce(((owner():aimPos()-owner():shootPos())*(SUMMON:mass()*5))) 
+            Valid = 1       
+        }
         if(Valid){
             # Sound       
             soundStop(3)
             holoCreate(802)
             holoAlpha(802,0)
             holoPos(802,owner():toWorld(vec(0,0,owner():height()/2)))
-            holoEntity(802):soundPlay(3,0,"ambient/levels/citadel/portal_beam_shoot6.wav")
-            soundPitch(3,255)
+            holoEntity(802):soundPlay(3,0,"ambient/atmosphere/cave_hit2.wav")
+            soundPitch(3,randint(175,255))
         }
     }
     function makeRune(R){
@@ -368,6 +409,9 @@ if(first()){
     
     # INIT FLARES
     timer("drawpoints",1)
+    
+    # INIT PORTAL CODE
+    timer("portals",1)
 }
 ##### END FIRST #####
 
@@ -401,7 +445,7 @@ if(clk("analysis")){
             # Actual Sound
             holoEntity(800):soundPlay(1,0,"ambient/levels/citadel/citadel_drone_loop1.wav")
             soundPitch(1,155)
-            soundVolume(1,0.4)
+            soundVolume(1,0.8)
 
         }else{       
             # Stop sound, remove trail
@@ -512,6 +556,39 @@ if(clk("drawpoints")){
     
     # Loop
     timer("drawpoints",1)
+}
+
+# Check Portals
+if(clk("portals")){
+    # PORTAL 1
+    local PORTAL1 = holoEntity(844)
+    local PORTAL2 = holoEntity(845)
+    if(Chair1:driver():isPlayer()){
+        Chair1:setPos(PORTAL2:pos())
+    }else{
+        Chair1:setPos(PORTAL1:pos())
+        Chair1:setAng(PORTAL1:angles())      
+    }
+    if(Chair1:pos():distance(PORTAL2:pos()) < 180){
+        Chair1:ejectPod()
+        Chair1:setPos(PORTAL1:pos())
+        Chair1:setAng(PORTAL1:angles())
+    }
+    
+    # PORTAL 2    
+    if(Chair2:driver():isPlayer()){
+        Chair2:setPos(PORTAL1:pos())
+    }else{
+        Chair2:setPos(PORTAL2:pos())
+        Chair2:setAng(PORTAL2:angles())
+        
+    }
+    if(Chair2:pos():distance(PORTAL1:pos()) < 180){
+        Chair2:ejectPod()
+        Chair2:setPos(PORTAL2:pos())
+        Chair2:setAng(PORTAL2:angles())
+    }
+    timer("portals",1)
 }
 ##### END TIMERS #####
 
