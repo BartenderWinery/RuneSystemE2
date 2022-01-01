@@ -561,16 +561,8 @@ if(clk("analysis")){
             # Last 3 occurences of Analyzer
             local Analyzer = LastSpell:concat(""):sub(LastSpell:count()-7,LastSpell:count())
             
-            # Delete Flares
-            for(I=0,798){
-                holoDelete(I)
-            }
-            
             ### Rune Definitions ###
-            
-            if(LEARNING){
-                printColor(vec(255,255,155),Analyzer)        # Print Pattern
-            }
+            #printColor(vec(255,255,155),Analyzer)        # Print Pattern
             
             # Complex
             if(Analyzer:sub(Analyzer:length(),Analyzer:length()) == "2" || Analyzer:sub(Analyzer:length(),Analyzer:length()) == "3"){
@@ -624,17 +616,17 @@ if(clk("analysis")){
 
 # Draw Flares
 if(clk("drawpoints")){
-    
-    local MOUSE1 = owner():keyAttack1()
-    local C = owner():keyPressed("c")
-    
-    # When Mouse1 is held....
-    if(MOUSE1 && C && perf(7)){
-        # Move Holo to Path
-        rangerFlags("W")
-        holoPos(977,rangerOffset(55, owner():shootPos(), owner():eye()):pos()+vec(0,0,5))
+    if(perf()){    
+        local MOUSE1 = owner():keyAttack1()
+        local C = owner():keyPressed("c")
+        
+        # When Mouse1 is held....
+        if(MOUSE1 && C && perf(7)){
+            # Move Holo to Path
+            rangerFlags("W")
+            holoPos(977,rangerOffset(55, owner():shootPos(), owner():eye()):pos()+vec(0,0,5))
+        }
     }
-    
     # Loop
     timer("drawpoints",1)
 }
@@ -673,19 +665,21 @@ if(clk("portals")){
             }
         }
     }
-    timer("portals",1)
+    timer("portals",100)
 }
 
 # Move Projectiles and Collision Check
 if(clk("projectiles")){
-    if(holoEntity(777):isValid()){
-        holoPos(777,holoEntity(777):toWorld(vec(155,0,0)))
-        if(holoEntity(777):pos():distance(Shootpos) < 222){
-            propSpawn("models/props_phx/torpedo.mdl",holoEntity(777):pos(),ang(0,0,0),1):propBreak()
-            holoDelete(777)
+    if(perf()){
+        if(holoEntity(777):isValid()){
+            holoPos(777,holoEntity(777):toWorld(vec(155,0,0)))
+            if(holoEntity(777):pos():distance(Shootpos) < 222){
+                propSpawn("models/props_phx/torpedo.mdl",holoEntity(777):pos(),ang(0,0,0),1):propBreak()
+                holoDelete(777)
+            }
         }
     }
-    timer("projectiles",10)
+    timer("projectiles",100)
 }
 ##### END TIMERS #####
 
