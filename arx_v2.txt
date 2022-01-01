@@ -561,33 +561,35 @@ if(clk("drawpoints")){
 
 # Check Portals
 if(clk("portals")){
-    # PORTAL 1
-    local PORTAL1 = holoEntity(844)
-    local PORTAL2 = holoEntity(845)
-    if(Chair1:driver():isPlayer()){
-        Chair1:setPos(PORTAL2:pos())
-    }else{
-        Chair1:setPos(PORTAL1:pos())
-        Chair1:setAng(PORTAL1:angles())      
-    }
-    if(Chair1:pos():distance(PORTAL2:pos()) < 180){
-        Chair1:ejectPod()
-        Chair1:setPos(PORTAL1:pos())
-        Chair1:setAng(PORTAL1:angles())
-    }
-    
-    # PORTAL 2    
-    if(Chair2:driver():isPlayer()){
-        Chair2:setPos(PORTAL1:pos())
-    }else{
-        Chair2:setPos(PORTAL2:pos())
-        Chair2:setAng(PORTAL2:angles())
+    if(perf()){
+        # PORTAL 1
+        local PORTAL1 = holoEntity(844)
+        local PORTAL2 = holoEntity(845)
+        if(Chair1:driver():isPlayer()){
+            Chair1:setPos(PORTAL2:pos())
+        }else{
+            Chair1:setPos(PORTAL1:pos())
+            Chair1:setAng(PORTAL1:angles())      
+        }
+        if(Chair1:pos():distance(PORTAL2:pos()) < 180){
+            Chair1:ejectPod()
+            Chair1:setPos(PORTAL1:pos())
+            Chair1:setAng(PORTAL1:angles())
+        }
         
-    }
-    if(Chair2:pos():distance(PORTAL1:pos()) < 180){
-        Chair2:ejectPod()
-        Chair2:setPos(PORTAL2:pos())
-        Chair2:setAng(PORTAL2:angles())
+        # PORTAL 2    
+        if(Chair2:driver():isPlayer()){
+            Chair2:setPos(PORTAL1:pos())
+        }else{
+            Chair2:setPos(PORTAL2:pos())
+            Chair2:setAng(PORTAL2:angles())
+            
+        }
+        if(Chair2:pos():distance(PORTAL1:pos()) < 180){
+            Chair2:ejectPod()
+            Chair2:setPos(PORTAL2:pos())
+            Chair2:setAng(PORTAL2:angles())
+        }
     }
     timer("portals",1)
 }
