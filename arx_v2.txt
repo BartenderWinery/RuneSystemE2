@@ -23,6 +23,9 @@
 # Entities
 @persist [INIT_Ent SUMMON Chair1 Chair2]:entity
 
+# Vectors
+@persist [INIT_Vec Shootpos]:vector
+
 #ifdef webAudio(string)
 @persist RuneAudio:webaudio
 #endif
@@ -170,43 +173,40 @@ if(first()){
             Valid = 1       
         }
         if(Pat == ""+RUNE_AAM+RUNE_YOK+RUNE_TAAR){
-            AimPos = owner():aimPos()
-            SUMMON:propDelete()
-            SUMMON = propSpawn("models/hunter/blocks/cube2x2x2.mdl",ang(0,0,0),1)
-            noCollide(SUMMON,owner())
-            SUMMON:setAlpha(0)
-            SUMMON:setTrails(100,44,4,"trails/laser",vec(255,155,55),255)
-            SUMMON:setPos(owner():shootPos())
-            SUMMON:setMass(444)
-            SUMMON:propFreeze(0)
-            SUMMON:applyForce(((owner():aimPos()-owner():shootPos())*(SUMMON:mass()*11))) 
-            SUMMON:ignite()
+            Shootpos = owner():aimPos()
+            holoCreate(777)
+            holoEntity(777):setTrails(100,44,4,"trails/laser",vec(255,155,11), 255)  
+            holoModel(777,"hq_sphere")
+            holoPos(777,owner():shootPos())
+            holoAng(777,owner():eyeAngles())
+            holoDisableShading(777,1)
+            holoColor(777,vec(255,155,11))
+            holoScale(777,vec(2,0.3,0.3))    
+            holoEntity(777):ignite()
             Valid = 1       
         }
         if(Pat == ""+RUNE_AAM+RUNE_TAAR){
-            AimPos = owner():aimPos()
-            SUMMON:propDelete()
-            SUMMON = propSpawn("models/hunter/blocks/cube2x2x2.mdl",ang(0,0,0),1)
-            noCollide(SUMMON,owner())
-            SUMMON:setAlpha(0)
-            SUMMON:setTrails(100,44,4,"trails/laser",vec(55,255,155),255)
-            SUMMON:setPos(owner():shootPos())
-            SUMMON:setMass(50000)
-            SUMMON:propFreeze(0)
-            SUMMON:applyForce(((owner():aimPos()-owner():shootPos())*(SUMMON:mass()*2))) 
-            Valid = 1       
+            Shootpos = owner():aimPos()
+            holoCreate(777)
+            holoEntity(777):setTrails(100,44,4,"trails/laser",vec(11,255,155), 255)  
+            holoModel(777,"hq_sphere")
+            holoPos(777,owner():shootPos())
+            holoAng(777,owner():eyeAngles())
+            holoDisableShading(777,1)
+            holoColor(777,vec(11,255,155))
+            holoScale(777,vec(2,0.3,0.3))
+            Valid = 1    
         }
         if(Pat == ""+RUNE_TAAR){
-            AimPos = owner():aimPos()
-            SUMMON:propDelete()
-            SUMMON = propSpawn("models/props_c17/oildrum001_explosive.mdl",ang(0,0,0),1)
-            noCollide(SUMMON,owner())
-            SUMMON:setAlpha(0)
-            SUMMON:setTrails(100,44,4,"trails/laser",vec(55,255,155),255)
-            SUMMON:setPos(owner():shootPos())
-            SUMMON:setMass(50000)
-            SUMMON:propFreeze(0)
-            SUMMON:applyForce(((owner():aimPos()-owner():shootPos())*(SUMMON:mass()*5))) 
+            Shootpos = owner():aimPos()
+            holoCreate(777)
+            holoEntity(777):setTrails(100,44,4,"trails/laser",vec(11,255,155), 255)  
+            holoModel(777,"hq_sphere")
+            holoPos(777,owner():shootPos())
+            holoAng(777,owner():eyeAngles())
+            holoDisableShading(777,1)
+            holoColor(777,vec(11,255,155))
+            holoScale(777,vec(2,0.3,0.3))
             Valid = 1       
         }
         if(Valid){
@@ -487,6 +487,9 @@ if(first()){
     
     # INIT PORTAL CODE
     timer("portals",1)
+    
+    # INIT PROJECTILE LOOP
+    timer("projectiles",1)
 }
 ##### END FIRST #####
 
@@ -669,6 +672,16 @@ if(clk("portals")){
         }
     }
     timer("portals",1)
+}
+
+# Move Projectiles and Collision Check
+if(clk("projectiles")){
+    holoPos(777,holoEntity(777):toWorld(vec(155,0,0)))
+    if(holoEntity(777):pos():distance(Shootpos) < 222){
+        propSpawn("models/props_phx/torpedo.mdl",holoEntity(777):pos(),ang(0,0,0),1):propBreak()
+        holoDelete(777)
+    }
+    timer("projectiles",10)
 }
 ##### END TIMERS #####
 
