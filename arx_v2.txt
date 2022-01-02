@@ -193,12 +193,11 @@ if(first()){
             SPIKE = propSpawn("models/hunter/misc/sphere2x2.mdl",ang(0,0,0),1)
             SPIKE:setMaterial("models/props_c17/fisheyelens")
             noCollide(SPIKE,owner())
-            #SUMMON:setAlpha(0)
-            #SUMMON:setTrails(100,44,4,"trails/laser",vec(0,255,155),255)
+            SPIKE:setAlpha(0)
             SPIKE:setPos(owner():shootPos())
             SPIKE:setMass(5000)
             SPIKE:propFreeze(0)
-            SPIKE:applyForce(((AimPos-owner():shootPos())*(SPIKE:mass()*6.5))-(vec(0,0,1)*(SPIKE:mass()*15)))
+            SPIKE:applyForce(((AimPos-owner():shootPos())*(SPIKE:mass()*6.5))-(vec(0,0,1)*(SPIKE:mass()*20)))
             timer("spiker",1)
             timer("remspike",Duration)
             Valid = 1       
@@ -812,14 +811,15 @@ if(clk("spiker")){
     if(perf()){
         if(SPIKE:isValidPhysics()){
             SPIKERINT++
-            holoCreate(SPIKERINT,SPIKE:pos(),vec(randint(1,2)),ang(0,randint(0,180),0),vec(255,255,255),SPIKEPROPS[randint(1,SPIKEPROPS:count()),string])
+            #holoCreate(SPIKERINT,SPIKE:pos(),vec(randint(1,2)),ang(0,randint(0,180),0),vec(255,255,255),SPIKEPROPS[randint(1,SPIKEPROPS:count()),string])
+            holoCreate(SPIKERINT,SPIKE:pos(),vec(randint(1,2)),ang(0,randint(0,180),0),vec(255,255,255),"models/props_wasteland/rockcliff01k.mdl")
             holoParent(SPIKERINT,holoIndex(SPIKEPARENT))
             holoEntity(SPIKERINT):soundPlay(randint(10,15),0,"physics/concrete/boulder_impact_hard"+randint(1,4)+".wav")
         }else{
             SPIKERINT = 300
         }
     }
-    timer("spiker",150)
+    timer("spiker",75)
 }
 ##### END TIMERS #####
 
