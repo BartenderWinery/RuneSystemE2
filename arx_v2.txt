@@ -12,7 +12,7 @@
 @persist [AUP AUPRIGHT ARIGHT ADOWNRIGHT ADOWN ADOWNLEFT ALEFT AUPLEFT]
 
 # Numbers 
-@persist [INIT_Num DEBUG MAX_POINTS Unreachable FirstPoint DRAWPOINT LEARNING ExploIncrement SPIKERINT]
+@persist [INIT_Num DEBUG MAX_POINTS Unreachable FirstPoint DRAWPOINT LEARNING ExploIncrement SPIKERINT UseCustomSounds]
 
 # Arrays, Tables
 @persist [INIT_Arr PList SPIKEPROPS]:array [DIR_ENUM INIT_Tbl RunePattern SpellMoves LastSpell]:table
@@ -38,6 +38,7 @@ if(first()){
     # DEBUG: turn this on for more info.
     DEBUG = 0
     LEARNING = 0
+    UseCustomSounds = 0
     
     # Spiking Models
     SPIKEPROPS:pushString("models/props_wasteland/rockcliff01k.mdl")
@@ -283,12 +284,16 @@ if(first()){
             holoEntity(802):soundPlay(3,0,"ambient/atmosphere/cave_hit2.wav")
             soundPitch(3,randint(175,255))
         }else{
+            
             #ifdef webAudio(string)
+            if(UseCustomSounds){
                 RuneAudio:destroy()
                 RuneAudio = webAudio("https://raw.githubusercontent.com/Groovemaker/GroovesOpenSourceE2s/master/Sounds/fizzle.mp3")
                 RuneAudio:setPos(owner():pos())
                 RuneAudio:play()
+            }
             #endif
+            
         }
     }
     function makeRune(R){
@@ -306,7 +311,6 @@ if(first()){
         
         # IF NOT IJWTB Webaudio Compatibility, play whispers...
         #ifndef webAudio(string)
-        
             holoEntity(801):soundPlay(2,0,Sound1)
             soundPitch(2,70)
             soundVolume(2,0.4)
@@ -336,56 +340,84 @@ if(first()){
             
         # ...else play actual arx fatalis MP3s!
         #else
-        
-            # Rune Functions
-            if(R == RUNE_AAM){
-                RuneAudio:destroy()
-                printColor(vec(255,255,155),"AAM!")
-                RuneAudio = webAudio("https://raw.githubusercontent.com/Groovemaker/GroovesOpenSourceE2s/master/Sounds/aam.mp3")
-                RuneAudio:setPos(owner():pos())
-                RuneAudio:play()
-            }
-            if(R == RUNE_RHAA){
-                RuneAudio:destroy()
-                printColor(vec(255,255,155),"RHAA!")
-                RuneAudio = webAudio("https://raw.githubusercontent.com/Groovemaker/GroovesOpenSourceE2s/master/Sounds/rhaa.mp3")
-                RuneAudio:setPos(owner():pos())
-                RuneAudio:play()
-            }
-            if(R == RUNE_MEGA){
-                RuneAudio:destroy()
-                printColor(vec(255,255,155),"MEGA!")
-                RuneAudio = webAudio("https://raw.githubusercontent.com/Groovemaker/GroovesOpenSourceE2s/master/Sounds/mega.mp3")
-                RuneAudio:setPos(owner():pos())
-                RuneAudio:play()
-            }
-            if(R == RUNE_VITAE){
-                RuneAudio:destroy()
-                printColor(vec(255,255,155),"VITAE!")
-                RuneAudio = webAudio("https://raw.githubusercontent.com/Groovemaker/GroovesOpenSourceE2s/master/Sounds/vitae.mp3")
-                RuneAudio:setPos(owner():pos())
-                RuneAudio:play()
-            }
-            if(R == RUNE_YOK){
-                RuneAudio:destroy()
-                printColor(vec(255,255,155),"YOK!")
-                RuneAudio = webAudio("https://raw.githubusercontent.com/Groovemaker/GroovesOpenSourceE2s/master/Sounds/yok.mp3")
-                RuneAudio:setPos(owner():pos())
-                RuneAudio:play()
-            }
-            if(R == RUNE_VISTA){
-                RuneAudio:destroy()
-                printColor(vec(255,255,155),"VISTA!")
-                RuneAudio = webAudio("https://raw.githubusercontent.com/Groovemaker/GroovesOpenSourceE2s/master/Sounds/vista.mp3")
-                RuneAudio:setPos(owner():pos())
-                RuneAudio:play()
-            }
-            if(R == RUNE_TAAR){
-                RuneAudio:destroy()
-                printColor(vec(255,255,155),"TAAR!")
-                RuneAudio = webAudio("https://raw.githubusercontent.com/Groovemaker/GroovesOpenSourceE2s/master/Sounds/taar.mp3")
-                RuneAudio:setPos(owner():pos())
-                RuneAudio:play()
+            if(UseCustomSounds){
+                # Rune Functions
+                if(R == RUNE_AAM){
+                    RuneAudio:destroy()
+                    printColor(vec(255,255,155),"AAM!")
+                    RuneAudio = webAudio("https://raw.githubusercontent.com/Groovemaker/GroovesOpenSourceE2s/master/Sounds/aam.mp3")
+                    RuneAudio:setPos(owner():pos())
+                    RuneAudio:play()
+                }
+                if(R == RUNE_RHAA){
+                    RuneAudio:destroy()
+                    printColor(vec(255,255,155),"RHAA!")
+                    RuneAudio = webAudio("https://raw.githubusercontent.com/Groovemaker/GroovesOpenSourceE2s/master/Sounds/rhaa.mp3")
+                    RuneAudio:setPos(owner():pos())
+                    RuneAudio:play()
+                }
+                if(R == RUNE_MEGA){
+                    RuneAudio:destroy()
+                    printColor(vec(255,255,155),"MEGA!")
+                    RuneAudio = webAudio("https://raw.githubusercontent.com/Groovemaker/GroovesOpenSourceE2s/master/Sounds/mega.mp3")
+                    RuneAudio:setPos(owner():pos())
+                    RuneAudio:play()
+                }
+                if(R == RUNE_VITAE){
+                    RuneAudio:destroy()
+                    printColor(vec(255,255,155),"VITAE!")
+                    RuneAudio = webAudio("https://raw.githubusercontent.com/Groovemaker/GroovesOpenSourceE2s/master/Sounds/vitae.mp3")
+                    RuneAudio:setPos(owner():pos())
+                    RuneAudio:play()
+                }
+                if(R == RUNE_YOK){
+                    RuneAudio:destroy()
+                    printColor(vec(255,255,155),"YOK!")
+                    RuneAudio = webAudio("https://raw.githubusercontent.com/Groovemaker/GroovesOpenSourceE2s/master/Sounds/yok.mp3")
+                    RuneAudio:setPos(owner():pos())
+                    RuneAudio:play()
+                }
+                if(R == RUNE_VISTA){
+                    RuneAudio:destroy()
+                    printColor(vec(255,255,155),"VISTA!")
+                    RuneAudio = webAudio("https://raw.githubusercontent.com/Groovemaker/GroovesOpenSourceE2s/master/Sounds/vista.mp3")
+                    RuneAudio:setPos(owner():pos())
+                    RuneAudio:play()
+                }
+                if(R == RUNE_TAAR){
+                    RuneAudio:destroy()
+                    printColor(vec(255,255,155),"TAAR!")
+                    RuneAudio = webAudio("https://raw.githubusercontent.com/Groovemaker/GroovesOpenSourceE2s/master/Sounds/taar.mp3")
+                    RuneAudio:setPos(owner():pos())
+                    RuneAudio:play()
+                }
+            }else{
+                holoEntity(801):soundPlay(2,0,Sound1)
+                soundPitch(2,70)
+                soundVolume(2,0.4)
+                
+                # Rune Functions
+                if(R == RUNE_AAM){
+                    printColor(vec(255,255,155),"AAM!")
+                }
+                if(R == RUNE_RHAA){
+                    printColor(vec(255,255,155),"RHAA!")
+                }
+                if(R == RUNE_MEGA){
+                    printColor(vec(255,255,155),"MEGA!")
+                }
+                if(R == RUNE_VITAE){
+                    printColor(vec(255,255,155),"VITAE!")
+                }
+                if(R == RUNE_YOK){
+                    printColor(vec(255,255,155),"YOK!")
+                }
+                if(R == RUNE_VISTA){
+                    printColor(vec(255,255,155),"VISTA!")
+                }
+                if(R == RUNE_TAAR){
+                    printColor(vec(255,255,155),"TAAR!")
+                }
             }
         #endif
         Runes = Runes + R
@@ -594,11 +626,17 @@ if(clk("analysis")){
             holoParent(800,owner())
             # Actual Sound
             #ifdef webAudio(string)
-                RuneLoopAudio:destroy()
-                RuneLoopAudio = webAudio("https://raw.githubusercontent.com/Groovemaker/GroovesOpenSourceE2s/master/Sounds/ambient.mp3")
-                RuneLoopAudio:setPos(holoEntity(800):pos())
-                RuneLoopAudio:setParent(holoEntity(800))
-                RuneLoopAudio:play()
+                if(UseCustomSounds){
+                    RuneLoopAudio:destroy()
+                    RuneLoopAudio = webAudio("https://raw.githubusercontent.com/Groovemaker/GroovesOpenSourceE2s/master/Sounds/ambient.mp3")
+                    RuneLoopAudio:setPos(holoEntity(800):pos())
+                    RuneLoopAudio:setParent(holoEntity(800))
+                    RuneLoopAudio:play()
+                }else{
+                    holoEntity(800):soundPlay(1,0,"ambient/levels/citadel/citadel_drone_loop1.wav")
+                    soundPitch(1,155)
+                    soundVolume(1,0.8)
+                }
             #else
                 holoEntity(800):soundPlay(1,0,"ambient/levels/citadel/citadel_drone_loop1.wav")
                 soundPitch(1,155)
@@ -609,7 +647,11 @@ if(clk("analysis")){
             # Stop sound, remove trail
             
             #ifdef webAudio(string)
-                RuneLoopAudio:destroy()
+                if(UseCustomSounds){
+                    RuneLoopAudio:destroy()
+                }else{
+                    soundStop(1)
+                }
             #else
                 soundStop(1)
             #endif
