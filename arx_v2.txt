@@ -125,6 +125,12 @@ if(first()){
             holoParent(844,owner():aimEntity())   
             Valid = 1       
         }
+        #ifdef e:plySetHealth(number)
+            if(Pat == ""+RUNE_VITAE+RUNE_AAM){
+                owner():plySetHealth(owner():health()+100) 
+                Valid = 1       
+            }
+        #endif
         if(Pat == ""+RUNE_AAM+RUNE_VITAE+RUNE_RHAA){
             Chair2:propDelete()
             Chair2 = seatSpawn("models/nova/airboat_seat.mdl",1)
@@ -174,16 +180,22 @@ if(first()){
 
             Valid = 1       
         }
-        if(Pat == ""+RUNE_RHAA+RUNE_MEGA){
-            concmd("say TEST BIND BOUND BY RHAA MEGA RUNES")
+        if(Pat == ""+RUNE_AAM+RUNE_MEGA){
+            local AimPos = owner():aimPos()
+            SUMMON:propDelete()
+            SUMMON = propSpawn("models/hunter/misc/sphere2x2.mdl",ang(0,0,0),1)
+            SUMMON:setMaterial("models/props_c17/fisheyelens")
+            noCollide(SUMMON,owner())
+            #SUMMON:setAlpha(0)
+            #SUMMON:setTrails(100,44,4,"trails/laser",vec(0,255,155),255)
+            SUMMON:setPos(owner():shootPos())
+            SUMMON:setMass(5000)
+            SUMMON:propFreeze(0)
+            SUMMON:applyForce(((AimPos-owner():shootPos())*(SUMMON:mass()*10))) 
             Valid = 1       
         }
         if(Pat == ""+RUNE_AAM+RUNE_VITAE){
             owner():plySetPos(owner():aimPos())   
-            Valid = 1       
-        }
-        if(Pat == ""+RUNE_RHAA){
-            propSpawn("models/props_phx/torpedo.mdl",owner():aimPos(),ang(0,0,0),1):propBreak() 
             Valid = 1       
         }
         if(Pat == ""+RUNE_VITAE+RUNE_MEGA){
