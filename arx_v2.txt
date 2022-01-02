@@ -91,13 +91,24 @@ if(first()){
     function makeSpell(Pat:string){
         local Valid = 0
         if(Pat == ""+RUNE_AAM+RUNE_YOK){
-            holoDelete(803)
-            holoCreate(803)
-            holoAlpha(803,0)
-            holoModel(803,"models/props_combine/breenglobe.mdl")
-            holoEntity(803):ignite(999)
-            holoPos(803,owner():aimPos())  
-            holoParent(803,owner():aimEntity())   
+            local AIMPOS = owner():aimPos()
+            local AIMENT = owner():aimEntity()
+            local DUR = 0.1
+            holoDelete(886)
+            holoDelete(885)
+            holoCreate(886)
+            holoAlpha(886,0)
+            holoModel(886,"models/hunter/blocks/cube8x8x1.mdl")
+            holoPos(886,AIMPOS)  
+            holoParent(886,AIMENT)   
+            holoCreate(885)
+            holoAlpha(885,0)
+            holoEntity(885):ignite(777)
+            holoModel(885,"models/props_combine/breenglobe.mdl")
+            timer("FireIgnite",550)
+            holoPos(885,AIMPOS)  
+            holoParent(885,AIMENT)
+            timer("FireIgnite",550)
             Valid = 1       
         }
         if(Pat == ""+RUNE_AAM+RUNE_VITAE+RUNE_MEGA){
@@ -759,6 +770,15 @@ if(clkName():find("re_explo")){
         }else{
             timer(clkName(),250)
         }
+    }
+}
+
+# Workaround for ignite spam protection
+if(clk("FireIgnite")){
+    if(perf()){
+        local DUR = 0.11
+        holoEntity(886):ignite(DUR)
+        holoEntity(886):ignite(DUR)
     }
 }
 ##### END TIMERS #####
