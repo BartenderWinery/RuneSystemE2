@@ -185,7 +185,9 @@ if(first()){
             Valid = 1       
         }
         if(Pat == ""+RUNE_AAM+RUNE_MEGA){
-            local AimPos = owner():aimPos()
+            rangerFlags("W")
+            rangerFilter(owner())
+            local AimPos = rangerOffset(2222,owner():shootPos(), owner():eye()):pos():setZ(owner():pos():z())
             local Duration = 2000
             SPIKEPARENT = holoCreate(959)
             holoAlpha(959,0)
@@ -197,7 +199,7 @@ if(first()){
             SPIKE:setPos(owner():shootPos())
             SPIKE:setMass(5000)
             SPIKE:propFreeze(0)
-            SPIKE:applyForce(((AimPos-owner():shootPos())*(SPIKE:mass()*6.5))-(vec(0,0,1)*(SPIKE:mass()*20)))
+            SPIKE:applyForce(((AimPos-owner():shootPos())*(SPIKE:mass()*1.5))-(vec(0,0,1)*(SPIKE:mass()*55)))
             timer("spiker",1)
             timer("remspike",Duration)
             Valid = 1       
