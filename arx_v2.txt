@@ -175,7 +175,7 @@ if(first()){
         if(Pat == ""+RUNE_AAM+RUNE_YOK+RUNE_TAAR){
             Shootpos = owner():aimPos()
             holoCreate(777)
-            holoEntity(777):setTrails(100,44,4,"trails/laser",vec(255,155,11), 255)  
+            holoEntity(777):setTrails(100,2,1,"trails/laser",vec(255,155,11), 255)  
             holoModel(777,"hq_sphere")
             holoPos(777,owner():shootPos())
             holoAng(777,owner():eyeAngles())
@@ -187,26 +187,32 @@ if(first()){
         }
         if(Pat == ""+RUNE_AAM+RUNE_TAAR){
             Shootpos = owner():aimPos()
-            holoCreate(777)
-            holoEntity(777):setTrails(100,44,4,"trails/laser",vec(11,255,155), 255)  
-            holoModel(777,"hq_sphere")
-            holoPos(777,owner():shootPos())
-            holoAng(777,owner():eyeAngles())
-            holoDisableShading(777,1)
-            holoColor(777,vec(11,255,155))
-            holoScale(777,vec(2,0.3,0.3))
+            local BIAS = 1.2
+            for(I=777,782){
+                holoCreate(I)
+                holoEntity(I):setTrails(100,2,0.3,"trails/laser",vec(11,255,155), 255)  
+                holoModel(I,"hq_sphere")
+                holoPos(I,owner():shootPos())
+                holoAng(I,owner():eyeAngles()+ang(randint(-BIAS,BIAS),randint(-BIAS,BIAS),randint(-BIAS,BIAS)))
+                holoDisableShading(I,1)
+                holoColor(I,vec(11,255,155))
+                holoScale(I,vec(2,0.3,0.3))
+            }
             Valid = 1    
         }
         if(Pat == ""+RUNE_TAAR){
             Shootpos = owner():aimPos()
-            holoCreate(777)
-            holoEntity(777):setTrails(100,44,4,"trails/laser",vec(11,255,155), 255)  
-            holoModel(777,"hq_sphere")
-            holoPos(777,owner():shootPos())
-            holoAng(777,owner():eyeAngles())
-            holoDisableShading(777,1)
-            holoColor(777,vec(11,255,155))
-            holoScale(777,vec(2,0.3,0.3))
+            local BIAS = 1.2
+            for(I=777,782){
+                holoCreate(I)
+                holoEntity(I):setTrails(100,2,0.3,"trails/laser",vec(11,255,155), 255)  
+                holoModel(I,"hq_sphere")
+                holoPos(I,owner():shootPos())
+                holoAng(I,owner():eyeAngles()+ang(randint(-BIAS,BIAS),randint(-BIAS,BIAS),randint(-BIAS,BIAS)))
+                holoDisableShading(I,1)
+                holoColor(I,vec(11,255,155))
+                holoScale(I,vec(2,0.3,0.3))
+            }
             Valid = 1       
         }
         if(Valid){
@@ -671,11 +677,18 @@ if(clk("portals")){
 # Move Projectiles and Collision Check
 if(clk("projectiles")){
     if(perf()){
-        if(holoEntity(777):isValid()){
-            holoPos(777,holoEntity(777):toWorld(vec(155,0,0)))
-            if(holoEntity(777):pos():distance(Shootpos) < 222){
-                propSpawn("models/props_phx/torpedo.mdl",holoEntity(777):pos(),ang(0,0,0),1):propBreak()
-                holoDelete(777)
+        for(I=777,782){
+            if(holoEntity(I):isValid()){
+                holoPos(I,holoEntity(I):toWorld(vec(333,0,0)))
+                rangerFilter(array(owner(),holoEntity(I)))
+                for(X=777,782){
+                    rangerFilter(holoEntity(X))
+                }
+                local RA = rangerOffset(22, holoEntity(I):toWorld(vec(-11,0,0)), holoEntity(I):toWorld(vec(11,0,0)))
+                if(holoEntity(I):pos():distance(Shootpos) < 222 || RA:hit()){
+                    propSpawn("models/props_phx/torpedo.mdl",holoEntity(I):pos(),ang(0,0,0),1):propBreak()
+                    holoDelete(I)
+                }
             }
         }
     }
