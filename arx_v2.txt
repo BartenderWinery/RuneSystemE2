@@ -186,7 +186,7 @@ if(first()){
             Valid = 1       
         }
         if(Pat == ""+RUNE_AAM+RUNE_MEGA){
-            rangerFlags("W")
+            rangerFlags("I")
             rangerFilter(owner())
             local AimPos = rangerOffset(2222,owner():shootPos(), owner():eye()):pos():setZ(owner():pos():z())
             local Duration = 2000
