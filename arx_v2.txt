@@ -12,7 +12,7 @@
 @persist [AUP AUPRIGHT ARIGHT ADOWNRIGHT ADOWN ADOWNLEFT ALEFT AUPLEFT]
 
 # Numbers 
-@persist [INIT_Num DEBUG MAX_POINTS Unreachable FirstPoint DRAWPOINT LEARNING]
+@persist [INIT_Num DEBUG MAX_POINTS Unreachable FirstPoint DRAWPOINT LEARNING ExploIncrement]
 
 # Arrays, Tables
 @persist [INIT_Arr PList]:array [DIR_ENUM INIT_Tbl RunePattern SpellMoves LastSpell]:table
@@ -74,6 +74,17 @@ if(first()){
     # Unreachable
     function arx_unreachable(){
         # Do Nothing
+    }
+    
+    # Make Explosion at pos 
+    function explo(VPos:vector){
+        # If we can spawn a prop, dew it, if not, engage re-looping
+        if(propCanCreate()){
+            propSpawn("models/props_phx/torpedo.mdl",VPos,ang(0,0,0),1):propBreak()
+        }else{
+            local Line = "re_explo;"+VPos:x()+";"+VPos:y()+";"+VPos:z()
+            timer(Line,1)
+        }
     }
     
     # Make Rune
@@ -188,7 +199,7 @@ if(first()){
         if(Pat == ""+RUNE_AAM+RUNE_TAAR){
             Shootpos = owner():aimPos()
             local BIAS = 1.2
-            for(I=777,782){
+            for(I=777,785){
                 holoCreate(I)
                 holoEntity(I):setTrails(100,2,0.3,"trails/laser",vec(11,255,155), 255)  
                 holoModel(I,"hq_sphere")
@@ -200,10 +211,25 @@ if(first()){
             }
             Valid = 1    
         }
+        if(Pat == ""+RUNE_AAM+RUNE_YOK+RUNE_TAAR+RUNE_MEGA){
+            Shootpos = owner():aimPos()
+            local BIAS = 3
+            for(I=773,790){
+                holoCreate(I)
+                holoEntity(I):setTrails(255,2,0.5,"trails/laser",vec(255,155,11), 255)  
+                holoModel(I,"hq_sphere")
+                holoPos(I,owner():shootPos())
+                holoAng(I,owner():eyeAngles()+ang(randint(-BIAS,BIAS),randint(-BIAS,BIAS),randint(-BIAS,BIAS)))
+                holoDisableShading(I,1)
+                holoColor(I,vec(255,155,11))
+                holoScale(I,vec(2,0.3,0.3))
+            }
+            Valid = 1    
+        }
         if(Pat == ""+RUNE_TAAR){
             Shootpos = owner():aimPos()
             local BIAS = 1.2
-            for(I=777,782){
+            for(I=777,780){
                 holoCreate(I)
                 holoEntity(I):setTrails(100,2,0.3,"trails/laser",vec(11,255,155), 255)  
                 holoModel(I,"hq_sphere")
@@ -677,22 +703,43 @@ if(clk("portals")){
 # Move Projectiles and Collision Check
 if(clk("projectiles")){
     if(perf()){
-        for(I=777,782){
+        for(I=773,790){
             if(holoEntity(I):isValid()){
-                holoPos(I,holoEntity(I):toWorld(vec(333,0,0)))
+                holoPos(I,holoEntity(I):toWorld(vec(200,0,0)))
                 rangerFilter(array(owner(),holoEntity(I)))
-                for(X=777,782){
+                for(X=773,790){
                     rangerFilter(holoEntity(X))
                 }
                 local RA = rangerOffset(22, holoEntity(I):toWorld(vec(-11,0,0)), holoEntity(I):toWorld(vec(11,0,0)))
                 if(holoEntity(I):pos():distance(Shootpos) < 222 || RA:hit()){
-                    propSpawn("models/props_phx/torpedo.mdl",holoEntity(I):pos(),ang(0,0,0),1):propBreak()
+                    explo(holoEntity(I):pos())
                     holoDelete(I)
                 }
             }
         }
     }
     timer("projectiles",100)
+}
+
+# Projectile re-explode workaround for when propCanCreate returns false, that way we get the maximum load, still.
+if(clkName():find("re_explo")){
+    if(perf()){
+        # Break up the clkName() that holds the informations about the vectors
+        local Parse = clkName():explode(";")
+        
+        # Remove the identifier (1)
+        Parse:remove(1)
+        
+        # Make the rest into a vector
+        local ReVec = vec(Parse[1,string]:toNumber(),Parse[2,string]:toNumber(),Parse[3,string]:toNumber())
+        
+        # Same procedure as before, if we can spawn, dew it, if not, re-loop.
+        if(propCanCreate()){
+            propSpawn("models/props_phx/torpedo.mdl",ReVec,ang(0,0,0),1):propBreak()
+        }else{
+            timer(clkName(),250)
+        }
+    }
 }
 ##### END TIMERS #####
 
