@@ -12,16 +12,16 @@
 @persist [AUP AUPRIGHT ARIGHT ADOWNRIGHT ADOWN ADOWNLEFT ALEFT AUPLEFT]
 
 # Numbers 
-@persist [INIT_Num DEBUG MAX_POINTS Unreachable FirstPoint DRAWPOINT LEARNING ExploIncrement]
+@persist [INIT_Num DEBUG MAX_POINTS Unreachable FirstPoint DRAWPOINT LEARNING ExploIncrement SPIKERINT]
 
 # Arrays, Tables
-@persist [INIT_Arr PList]:array [DIR_ENUM INIT_Tbl RunePattern SpellMoves LastSpell]:table
+@persist [INIT_Arr PList SPIKEPROPS]:array [DIR_ENUM INIT_Tbl RunePattern SpellMoves LastSpell]:table
 
 # Strings
 @persist [INIT_Str Runes]:string
 
 # Entities
-@persist [INIT_Ent SUMMON Chair1 Chair2]:entity
+@persist [INIT_Ent SUMMON Chair1 Chair2 SPIKE SPIKEPARENT]:entity
 
 # Vectors
 @persist [INIT_Vec Shootpos]:vector
@@ -38,6 +38,10 @@ if(first()){
     # DEBUG: turn this on for more info.
     DEBUG = 0
     LEARNING = 0
+    
+    # Spiking Models
+    SPIKEPROPS:pushString("models/props_wasteland/rockcliff01k.mdl")
+    SPIKEPROPS:pushString("models/props_wasteland/rockcliff05f.mdl")    
     
     #### DIR ENUMS ####
     AUP             = 0
@@ -182,16 +186,21 @@ if(first()){
         }
         if(Pat == ""+RUNE_AAM+RUNE_MEGA){
             local AimPos = owner():aimPos()
-            SUMMON:propDelete()
-            SUMMON = propSpawn("models/hunter/misc/sphere2x2.mdl",ang(0,0,0),1)
-            SUMMON:setMaterial("models/props_c17/fisheyelens")
-            noCollide(SUMMON,owner())
+            local Duration = 2000
+            SPIKEPARENT = holoCreate(959)
+            holoAlpha(959,0)
+            SPIKE:propDelete()
+            SPIKE = propSpawn("models/hunter/misc/sphere2x2.mdl",ang(0,0,0),1)
+            SPIKE:setMaterial("models/props_c17/fisheyelens")
+            noCollide(SPIKE,owner())
             #SUMMON:setAlpha(0)
             #SUMMON:setTrails(100,44,4,"trails/laser",vec(0,255,155),255)
-            SUMMON:setPos(owner():shootPos())
-            SUMMON:setMass(5000)
-            SUMMON:propFreeze(0)
-            SUMMON:applyForce(((AimPos-owner():shootPos())*(SUMMON:mass()*10))) 
+            SPIKE:setPos(owner():shootPos())
+            SPIKE:setMass(5000)
+            SPIKE:propFreeze(0)
+            SPIKE:applyForce(((AimPos-owner():shootPos())*(SPIKE:mass()*6.5))-(vec(0,0,1)*(SPIKE:mass()*15)))
+            timer("spiker",1)
+            timer("remspike",Duration)
             Valid = 1       
         }
         if(Pat == ""+RUNE_AAM+RUNE_VITAE){
@@ -792,6 +801,25 @@ if(clk("FireIgnite")){
         holoEntity(886):ignite(DUR)
         holoEntity(886):ignite(DUR)
     }
+}
+
+# Spike Timers
+if(clk("remspike")){
+    SPIKE:propDelete()
+    holoDelete(holoIndex(SPIKEPARENT))
+}
+if(clk("spiker")){
+    if(perf()){
+        if(SPIKE:isValidPhysics()){
+            SPIKERINT++
+            holoCreate(SPIKERINT,SPIKE:pos(),vec(randint(1,2)),ang(0,randint(0,180),0),vec(255,255,255),SPIKEPROPS[randint(1,SPIKEPROPS:count()),string])
+            holoParent(SPIKERINT,holoIndex(SPIKEPARENT))
+            holoEntity(SPIKERINT):soundPlay(randint(10,15),0,"physics/concrete/boulder_impact_hard"+randint(1,4)+".wav")
+        }else{
+            SPIKERINT = 300
+        }
+    }
+    timer("spiker",150)
 }
 ##### END TIMERS #####
 
