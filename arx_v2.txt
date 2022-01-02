@@ -607,7 +607,7 @@ if(clk("analysis")){
     # Mouse1 is being held down
     if(C && MOUSE1 && perf()){
         # Flags W so we dont accidently hit entities
-        rangerFlags("W")
+        rangerFlags("I")
         
         # Transform the ranger worldpos to local
         local PX = owner():toLocal(rangerOffset(11, owner():shootPos(), owner():eye()):pos())
