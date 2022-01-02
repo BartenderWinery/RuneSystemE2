@@ -27,7 +27,7 @@
 @persist [INIT_Vec Shootpos]:vector
 
 #ifdef webAudio(string)
-@persist RuneAudio:webaudio
+@persist [RuneAudio RuneLoopAudio]:webaudio
 #endif
 
 ##### START FIRST #####
@@ -249,6 +249,13 @@ if(first()){
             holoPos(802,owner():toWorld(vec(0,0,owner():height()/2)))
             holoEntity(802):soundPlay(3,0,"ambient/atmosphere/cave_hit2.wav")
             soundPitch(3,randint(175,255))
+        }else{
+            #ifdef webAudio(string)
+                RuneAudio:destroy()
+                RuneAudio = webAudio("https://raw.githubusercontent.com/Groovemaker/GroovesOpenSourceE2s/master/Sounds/fizzle.mp3")
+                RuneAudio:setPos(owner():pos())
+                RuneAudio:play()
+            #endif
         }
     }
     function makeRune(R){
@@ -553,13 +560,26 @@ if(clk("analysis")){
             holoPos(800,owner():toWorld(vec(0,0,owner():height()/2)))
             holoParent(800,owner())
             # Actual Sound
-            holoEntity(800):soundPlay(1,0,"ambient/levels/citadel/citadel_drone_loop1.wav")
-            soundPitch(1,155)
-            soundVolume(1,0.8)
+            #ifdef webAudio(string)
+                RuneLoopAudio:destroy()
+                RuneLoopAudio = webAudio("https://raw.githubusercontent.com/Groovemaker/GroovesOpenSourceE2s/master/Sounds/ambient.mp3")
+                RuneLoopAudio:setPos(holoEntity(800):pos())
+                RuneLoopAudio:setParent(holoEntity(800))
+                RuneLoopAudio:play()
+            #else
+                holoEntity(800):soundPlay(1,0,"ambient/levels/citadel/citadel_drone_loop1.wav")
+                soundPitch(1,155)
+                soundVolume(1,0.8)
+            #endif
 
         }else{       
             # Stop sound, remove trail
-            soundStop(1)
+            
+            #ifdef webAudio(string)
+                RuneLoopAudio:destroy()
+            #else
+                soundStop(1)
+            #endif
             makeSpell(Runes)
             Runes = ""
         }
